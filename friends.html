@@ -1,0 +1,611 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأصدقاء | EFOOTBALL COMMUNITY</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg: #080b0a;
+            --panel: #111613;
+            --panel2: #171e19;
+            --green: #39ff78;
+            --text: #f4fff6;
+            --muted: #9aa79e;
+            --border: #26352b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        button, input {
+            font: inherit;
+        }
+
+        button { cursor: pointer; }
+
+        .topbar {
+            height: 70px;
+            padding: 0 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            background: #0d120e;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 19px;
+            font-weight: 900;
+            color: var(--green);
+        }
+
+        .logo span { color: white; }
+
+        .top-link {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .page {
+            max-width: 1250px;
+            margin: 25px auto;
+            padding: 0 18px;
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 22px;
+        }
+
+        .sidebar, .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .sidebar {
+            padding: 14px;
+            height: fit-content;
+            position: sticky;
+            top: 15px;
+        }
+
+        .nav-title {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 8px 10px 14px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 13px 12px;
+            border-radius: 9px;
+            margin-bottom: 5px;
+            color: #c4cec7;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #1b3021;
+            color: var(--green);
+        }
+
+        main { min-width: 0; }
+
+        .heading { margin-bottom: 20px; }
+
+        .heading h1 {
+            margin: 0 0 9px;
+            font-size: 27px;
+        }
+
+        .heading p {
+            color: var(--muted);
+            margin: 0;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .panel {
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+
+        .panel h2 {
+            font-size: 17px;
+            margin: 0 0 16px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-row input {
+            width: 100%;
+            min-width: 0;
+            padding: 13px 14px;
+            border-radius: 9px;
+            border: 1px solid var(--border);
+            outline: none;
+            color: white;
+            background: #090d0a;
+        }
+
+        input:focus {
+            border-color: var(--green);
+        }
+
+        .btn {
+            border: 1px solid var(--green);
+            border-radius: 9px;
+            padding: 11px 17px;
+            color: #071009;
+            background: var(--green);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .btn:hover { filter: brightness(.9); }
+
+        .btn.secondary {
+            background: transparent;
+            color: var(--green);
+        }
+
+        .btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            border: 1px solid var(--border);
+            background: var(--panel2);
+            color: #c4cec7;
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+
+        .tab.active {
+            border-color: var(--green);
+            color: var(--green);
+            background: #15251a;
+        }
+
+        .players {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 13px;
+        }
+
+        .player {
+            background: #0b100c;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #1b3021;
+            border: 1px solid #315c3d;
+            color: var(--green);
+            font-size: 21px;
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .player-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .player-info h3 {
+            margin: 0 0 6px;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .player-info p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .player .btn {
+            padding: 9px 11px;
+            font-size: 12px;
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px 12px;
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .status {
+            color: var(--green);
+            font-size: 12px;
+            margin-top: 12px;
+            min-height: 17px;
+        }
+
+        .note {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.8;
+            margin-top: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .page { grid-template-columns: 1fr; }
+            .sidebar {
+                position: static;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            .nav-title { display: none; }
+            .nav-link { margin: 0; }
+        }
+
+        @media (max-width: 520px) {
+            .players { grid-template-columns: 1fr; }
+            .heading h1 { font-size: 23px; }
+            .panel { padding: 14px; }
+            .topbar { padding: 0 14px; }
+            .logo { font-size: 15px; }
+            .search-row { flex-direction: column; }
+            .search-row .btn { width: 100%; }
+        }
+    </style>
+</head>
+
+<body>
+<header class="topbar">
+    <a href="community.html" class="logo">EFOOTBALL <span>COMMUNITY</span></a>
+    <a href="community.html" class="top-link">← الرجوع للرئيسية</a>
+</header>
+
+<div class="page">
+    <aside class="sidebar">
+        <div class="nav-title">القائمة الرئيسية</div>
+        <a class="nav-link" href="community.html">🏠 الرئيسية</a>
+        <a class="nav-link active" href="friends.html">👥 الأصدقاء</a>
+        <a class="nav-link" href="messages.html">💬 الرسائل</a>
+        <a class="nav-link" href="tournaments.html">🏆 البطولات</a>
+        <a class="nav-link" href="market.html">🛒 السوق</a>
+        <a class="nav-link" href="profile.html">👤 الملف الشخصي</a>
+    </aside>
+
+    <main>
+        <div class="heading">
+            <h1>👥 الأصدقاء</h1>
+            <p>اكتشف لاعبين جدد، ابحث عن أصدقائك وابنِ مجتمعك في eFootball.</p>
+        </div>
+
+        <section class="panel">
+            <h2>🔎 ابحث عن لاعب</h2>
+            <div class="search-row">
+                <input id="searchInput" type="search"
+                    placeholder="اكتب اسم اللاعب أو اسم المستخدم..."
+                    autocomplete="off">
+                <button class="btn" id="searchBtn">بحث</button>
+            </div>
+            <div class="status" id="searchStatus" role="status"></div>
+        </section>
+
+        <section class="panel">
+            <div class="tabs">
+                <button class="tab active" data-tab="all">🌍 اللاعبون</button>
+                <button class="tab" data-tab="requests">📩 طلبات الصداقة</button>
+                <button class="tab" data-tab="friends">💚 أصدقائي</button>
+            </div>
+
+            <div id="players" class="players">
+                <div class="empty">⏳ جاري الاتصال بقاعدة البيانات...</div>
+            </div>
+
+            <p class="note">
+                ملاحظة: لازم تكون جداول profiles وfriend_requests مهيأة في Supabase
+                مع سياسات الأمان المناسبة حتى تعمل ميزات البحث وطلبات الصداقة بين الحسابات.
+            </p>
+        </section>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // نفس بيانات Supabase المستعملة في community.html
+    const SUPABASE_URL = "https://skidqfnomxrgdkvbwrgf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_DOOPVVEASu1YZExSNhD3bw_8jkBIOOu";
+
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+    const playersContainer = document.getElementById("players");
+    const searchInput = document.getElementById("searchInput");
+    const searchStatus = document.getElementById("searchStatus");
+
+    let currentUser = null;
+    let currentTab = "all";
+    let searchTerm = "";
+    let profiles = [];
+    let friends = new Set();
+    let incomingRequests = [];
+    let outgoingRequests = new Set();
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        })[char]);
+    }
+
+    function avatarHTML(profile) {
+        if (profile.avatar_url) {
+            return `<img src="${escapeHTML(profile.avatar_url)}" alt="">`;
+        }
+        return escapeHTML((profile.username || "?").charAt(0).toUpperCase());
+    }
+
+    async function loadData() {
+        playersContainer.innerHTML =
+            '<div class="empty">⏳ جاري تحميل اللاعبين...</div>';
+
+        const { data: authData, error: authError } =
+            await supabaseClient.auth.getUser();
+
+        if (authError) {
+            playersContainer.innerHTML =
+                '<div class="empty">تعذر التحقق من الحساب. حدّث الصفحة وحاول مجددًا.</div>';
+            return;
+        }
+
+        currentUser = authData.user;
+
+        if (!currentUser) {
+            playersContainer.innerHTML =
+                '<div class="empty">لازم تسجل الدخول باش تستعمل الأصدقاء.<br><a href="login_new.html" style="color:var(--green)">الذهاب لتسجيل الدخول</a></div>';
+            return;
+        }
+
+        const { data: profileData, error: profileError } =
+            await supabaseClient
+                .from("profiles")
+                .select("id, username, avatar_url")
+                .order("username", { ascending: true })
+                .limit(200);
+
+        if (profileError) {
+            playersContainer.innerHTML =
+                '<div class="empty">ما قدرناش نجيبو اللاعبين. تأكد من جدول profiles وصلاحيات القراءة في Supabase.</div>';
+            return;
+        }
+
+        profiles = (profileData || []).filter(p => p.id !== currentUser.id);
+
+        const { data: requestData, error: requestError } =
+            await supabaseClient
+                .from("friend_requests")
+                .select("id, sender_id, receiver_id, status")
+                .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`);
+
+        if (requestError) {
+            searchStatus.textContent =
+                "البحث متاح، لكن طلبات الصداقة تحتاج جدول friend_requests وسياسات الأمان.";
+            renderPlayers();
+            return;
+        }
+
+        friends = new Set();
+        outgoingRequests = new Set();
+        incomingRequests = [];
+
+        (requestData || []).forEach(request => {
+            if (request.status === "accepted") {
+                friends.add(
+                    request.sender_id === currentUser.id
+                        ? request.receiver_id
+                        : request.sender_id
+                );
+            } else if (request.status === "pending") {
+                if (request.sender_id === currentUser.id) {
+                    outgoingRequests.add(request.receiver_id);
+                } else {
+                    incomingRequests.push(request);
+                }
+            }
+        });
+
+        renderPlayers();
+    }
+
+    function renderPlayers() {
+        let list = profiles.filter(profile =>
+            (profile.username || "")
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
+        );
+
+        if (currentTab === "friends") {
+            list = list.filter(profile => friends.has(profile.id));
+        }
+
+        if (currentTab === "requests") {
+            const requestIds = new Set(incomingRequests.map(r => r.sender_id));
+            list = profiles.filter(profile => requestIds.has(profile.id));
+        }
+
+        if (!list.length) {
+            playersContainer.innerHTML =
+                `<div class="empty">${
+                    currentTab === "requests"
+                    ? "ما عندك حتى طلب صداقة وارد حاليًا."
+                    : currentTab === "friends"
+                    ? "قائمة أصدقائك فارغة حاليًا."
+                    : "ما لقيناش لاعبين بهذا الاسم."
+                }</div>`;
+            return;
+        }
+
+        playersContainer.innerHTML = list.map(profile => {
+            let action = "";
+
+            if (currentTab === "requests") {
+                const request = incomingRequests.find(
+                    r => r.sender_id === profile.id
+                );
+                action = request
+                    ? `<button class="btn" data-action="accept" data-id="${escapeHTML(request.id)}">قبول</button>`
+                    : "";
+            } else if (friends.has(profile.id)) {
+                action = '<button class="btn secondary" disabled>✓ صديق</button>';
+            } else if (outgoingRequests.has(profile.id)) {
+                action = '<button class="btn secondary" disabled>⏳ مُرسل</button>';
+            } else {
+                action = `<button class="btn" data-action="add" data-id="${escapeHTML(profile.id)}">+ إضافة</button>`;
+            }
+
+            return `
+                <article class="player">
+                    <div class="avatar">${avatarHTML(profile)}</div>
+                    <div class="player-info">
+                        <h3>${escapeHTML(profile.username || "لاعب")}</h3>
+                        <p>🎮 لاعب في المجتمع</p>
+                    </div>
+                    ${action}
+                </article>`;
+        }).join("");
+    }
+
+    async function sendRequest(receiverId) {
+        if (receiverId === currentUser.id) return;
+
+        const { error } = await supabaseClient
+            .from("friend_requests")
+            .insert({
+                sender_id: currentUser.id,
+                receiver_id: receiverId,
+                status: "pending"
+            });
+
+        if (error) {
+            searchStatus.textContent =
+                "ما قدرناش نرسلوا الطلب. تحقق من جدول friend_requests وسياسات INSERT.";
+            return;
+        }
+
+        searchStatus.textContent = "✅ تم إرسال طلب الصداقة.";
+        await loadData();
+    }
+
+    async function acceptRequest(requestId) {
+        const request = incomingRequests.find(
+            item => String(item.id) === String(requestId)
+        );
+
+        if (!request) return;
+
+        const { error } = await supabaseClient
+            .from("friend_requests")
+            .update({ status: "accepted" })
+            .eq("id", requestId)
+            .eq("receiver_id", currentUser.id);
+
+        if (error) {
+            searchStatus.textContent =
+                "تعذر قبول الطلب. تحقق من سياسات UPDATE في Supabase.";
+            return;
+        }
+
+        searchStatus.textContent = "💚 تمت إضافة الصديق بنجاح.";
+        await loadData();
+    }
+
+    document.getElementById("searchBtn").addEventListener("click", () => {
+        searchTerm = searchInput.value.trim();
+        renderPlayers();
+    });
+
+    searchInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            searchTerm = searchInput.value.trim();
+            renderPlayers();
+        }
+    });
+
+    document.querySelectorAll(".tab").forEach(button => {
+        button.addEventListener("click", () => {
+            document.querySelectorAll(".tab").forEach(tab =>
+                tab.classList.remove("active")
+            );
+
+            button.classList.add("active");
+            currentTab = button.dataset.tab;
+            renderPlayers();
+        });
+    });
+
+    playersContainer.addEventListener("click", async event => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+
+        button.disabled = true;
+
+        if (button.dataset.action === "add") {
+            await sendRequest(button.dataset.id);
+        } else if (button.dataset.action === "accept") {
+            await acceptRequest(button.dataset.id);
+        }
+
+        button.disabled = false;
+    });
+
+    loadData();
+</script>
+</body>
+</html>
+```

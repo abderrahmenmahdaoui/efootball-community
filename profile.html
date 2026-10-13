@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بروفايلي | EFOOTBALL COMMUNITY</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .profile-page {
+      max-width: 650px;
+      margin: 40px auto;
+      padding: 24px;
+      color: #f4fff7;
+      background: #101510;
+      border: 1px solid #294a32;
+      border-radius: 18px;
+      font-family: Arial, sans-serif;
+    }
+    .profile-page h1 {
+      color: #4ade80;
+      text-align: center;
+    }
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      margin: 20px auto;
+      border-radius: 50%;
+      border: 3px solid #4ade80;
+      background: #202a22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 42px;
+    }
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .profile-page label {
+      display: block;
+      margin: 18px 0 8px;
+    }
+    .profile-page input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      color: white;
+      background: #1b231d;
+      border: 1px solid #395a40;
+      border-radius: 8px;
+    }
+    .profile-page button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 13px;
+      color: #07140b;
+      background: #4ade80;
+      border: none;
+      border-radius: 9px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .profile-note {
+      color: #b6c6b9;
+      text-align: center;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <main class="profile-page">
+    <h1>👤 بروفايلي</h1>
+    <p class="profile-note">EFOOTBALL COMMUNITY</p>
+
+    <div class="profile-avatar" id="avatarPreview">⚽</div>
+
+    <label for="avatarFile">الصورة الشخصية</label>
+    <input id="avatarFile" type="file" accept="image/*">
+
+    <label for="username">الاسم</label>
+    <input id="username" type="text" maxlength="40"
+           placeholder="اكتب اسمك">
+
+    <label for="efootballId">eFootball ID</label>
+    <input id="efootballId" type="text" maxlength="80"
+           placeholder="اكتب معرّفك داخل اللعبة">
+
+    <button id="saveProfile" type="button">حفظ البروفيل</button>
+    <p class="profile-note" id="profileStatus">
+      صفحة البروفيل جاهزة للتصميم والربط بقاعدة البيانات.
+    </p>
+  </main>
+
+  <script>
+    const avatarFile = document.getElementById("avatarFile");
+    const avatarPreview = document.getElementById("avatarPreview");
+
+    avatarFile.addEventListener("change", () => {
+      const file = avatarFile.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        alert("اختار ملف صورة صالح.");
+        avatarFile.value = "";
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("اختار صورة حجمها أقل من 5 ميغابايت.");
+        avatarFile.value = "";
+        return;
+      }
+
+      const imageUrl = URL.createObjectURL(file);
+      avatarPreview.innerHTML = "";
+
+      const img = document.createElement("img");
+      img.src = imageUrl;
+      img.alt = "معاينة الصورة الشخصية";
+      avatarPreview.appendChild(img);
+    });
+
+    document.getElementById("saveProfile").addEventListener("click", () => {
+      document.getElementById("profileStatus").textContent =
+        "المعاينة تعمل. حفظ البيانات ورفع الصورة يحتاجان ربط Supabase.";
+    });
+  </script>
+</body>
+</html>

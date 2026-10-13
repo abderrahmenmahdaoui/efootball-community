@@ -1,0 +1,645 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرسائل | EFOOTBALL COMMUNITY</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg: #080b0a;
+            --panel: #111613;
+            --panel2: #171e19;
+            --green: #39ff78;
+            --text: #f4fff6;
+            --muted: #9aa79e;
+            --border: #26352b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button, input, textarea { font: inherit; }
+        button { cursor: pointer; }
+
+        .topbar {
+            height: 70px;
+            padding: 0 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #0d120e;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            color: var(--green);
+            font-size: 19px;
+            font-weight: 900;
+        }
+
+        .logo span { color: white; }
+
+        .back-link { color: var(--muted); font-size: 14px; }
+
+        .page {
+            max-width: 1250px;
+            margin: 25px auto;
+            padding: 0 18px;
+            display: grid;
+            grid-template-columns: 210px minmax(0, 1fr);
+            gap: 20px;
+        }
+
+        .sidebar, .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .sidebar {
+            padding: 14px;
+            height: fit-content;
+        }
+
+        .nav-title {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 8px 10px 14px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 13px 12px;
+            border-radius: 9px;
+            margin-bottom: 5px;
+            color: #c4cec7;
+            font-size: 14px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #1b3021;
+            color: var(--green);
+        }
+
+        main { min-width: 0; }
+
+        .heading { margin-bottom: 18px; }
+
+        .heading h1 {
+            font-size: 26px;
+            margin: 0 0 8px;
+        }
+
+        .heading p {
+            color: var(--muted);
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        .chat-layout {
+            display: grid;
+            grid-template-columns: 260px minmax(0, 1fr);
+            min-height: 560px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--panel);
+        }
+
+        .chat-list {
+            border-left: 1px solid var(--border);
+            padding: 15px;
+        }
+
+        .chat-list h2 {
+            font-size: 16px;
+            margin: 0 0 14px;
+        }
+
+        .search {
+            width: 100%;
+            padding: 11px;
+            background: #090d0a;
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 9px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        .search:focus, .message-input:focus {
+            border-color: var(--green);
+        }
+
+        .conversation {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 12px 8px;
+            border-radius: 9px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .conversation:hover, .conversation.active {
+            background: #17251b;
+            border-color: var(--border);
+        }
+
+        .avatar {
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #1b3021;
+            border: 1px solid #315c3d;
+            color: var(--green);
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .conversation-info { min-width: 0; }
+
+        .conversation-info strong {
+            display: block;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .conversation-info small {
+            display: block;
+            color: var(--muted);
+            margin-top: 5px;
+            font-size: 11px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .chat-window {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 560px;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            min-height: 72px;
+        }
+
+        .chat-header strong { font-size: 14px; }
+
+        .chat-header small {
+            display: block;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 420px;
+        }
+
+        .empty {
+            margin: auto;
+            text-align: center;
+            color: var(--muted);
+            line-height: 1.9;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        .bubble {
+            max-width: 78%;
+            padding: 11px 13px;
+            border-radius: 12px;
+            background: #1a211c;
+            border: 1px solid var(--border);
+            align-self: flex-start;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .bubble.mine {
+            background: #173822;
+            border-color: #285a37;
+            align-self: flex-end;
+        }
+
+        .bubble small {
+            display: block;
+            margin-top: 6px;
+            color: #a6b9aa;
+            font-size: 10px;
+            text-align: left;
+        }
+
+        .composer {
+            display: flex;
+            gap: 10px;
+            padding: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .message-input {
+            flex: 1;
+            min-width: 0;
+            min-height: 44px;
+            max-height: 120px;
+            resize: vertical;
+            padding: 12px;
+            background: #090d0a;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            color: white;
+            outline: none;
+        }
+
+        .send-btn {
+            padding: 0 17px;
+            border: 1px solid var(--green);
+            background: var(--green);
+            color: #071009;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+        .send-btn:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+        .notice {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.8;
+            margin-top: 13px;
+        }
+
+        .status {
+            font-size: 12px;
+            color: var(--green);
+            padding: 0 14px 10px;
+        }
+
+        @media (max-width: 850px) {
+            .page { grid-template-columns: 1fr; }
+            .sidebar { display: flex; flex-wrap: wrap; gap: 5px; }
+            .nav-title { display: none; }
+            .nav-link { margin: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .chat-layout { grid-template-columns: 1fr; }
+            .chat-list {
+                border-left: 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .chat-window { min-height: 430px; }
+            .chat-body { min-height: 230px; }
+            .topbar { padding: 0 13px; }
+            .logo { font-size: 14px; }
+            .heading h1 { font-size: 22px; }
+            .composer { padding: 10px; }
+            .send-btn { padding: 0 12px; }
+        }
+    </style>
+</head>
+
+<body>
+<header class="topbar">
+    <a href="community.html" class="logo">EFOOTBALL <span>COMMUNITY</span></a>
+    <a href="community.html" class="back-link">← الرئيسية</a>
+</header>
+
+<div class="page">
+    <aside class="sidebar">
+        <div class="nav-title">القائمة الرئيسية</div>
+        <a class="nav-link" href="community.html">🏠 الرئيسية</a>
+        <a class="nav-link" href="friends.html">👥 الأصدقاء</a>
+        <a class="nav-link active" href="messages.html">💬 الرسائل</a>
+        <a class="nav-link" href="tournaments.html">🏆 البطولات</a>
+        <a class="nav-link" href="market.html">🛒 السوق</a>
+        <a class="nav-link" href="profile.html">👤 الملف الشخصي</a>
+    </aside>
+
+    <main>
+        <div class="heading">
+            <h1>💬 الرسائل الخاصة</h1>
+            <p>تواصل مع أصدقائك ولاعبي مجتمع eFootball.</p>
+        </div>
+
+        <section class="chat-layout">
+            <div class="chat-list">
+                <h2>محادثاتي</h2>
+                <input class="search" id="userSearch"
+                    placeholder="ابحث عن صديق..." autocomplete="off">
+                <div id="conversationList">
+                    <div class="empty">⏳ جاري تحميل الأصدقاء...</div>
+                </div>
+            </div>
+
+            <div class="chat-window">
+                <div class="chat-header">
+                    <div class="avatar" id="headerAvatar">💬</div>
+                    <div>
+                        <strong id="headerName">اختر صديقًا</strong>
+                        <small id="headerInfo">محادثات EFOOTBALL COMMUNITY</small>
+                    </div>
+                </div>
+
+                <div class="chat-body" id="chatBody">
+                    <div class="empty">
+                        👋 مرحبًا بك في الرسائل<br>
+                        اختر صديقًا لبدء المحادثة.
+                    </div>
+                </div>
+
+                <div class="composer">
+                    <textarea id="messageInput" class="message-input"
+                        placeholder="اكتب رسالتك..." rows="1" maxlength="2000"
+                        disabled></textarea>
+                    <button id="sendBtn" class="send-btn" disabled>إرسال</button>
+                </div>
+                <div id="status" class="status" role="status"></div>
+            </div>
+        </section>
+
+        <p class="notice">
+            الرسائل تحتاج إعداد جداول Supabase وسياسات أمان تسمح فقط لطرفي المحادثة بقراءة الرسائل وإرسالها.
+        </p>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://skidqfnomxrgdkvbwrgf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DOOPVVEASu1YZExSNhD3bw_8jkBIOOu";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const listEl = document.getElementById("conversationList");
+const bodyEl = document.getElementById("chatBody");
+const inputEl = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+const statusEl = document.getElementById("status");
+
+let me = null;
+let friends = [];
+let selectedFriend = null;
+let messages = [];
+let channel = null;
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#039;"
+    })[c]);
+}
+
+function avatarContent(profile) {
+    if (profile.avatar_url) {
+        return `<img src="${escapeHTML(profile.avatar_url)}" alt="">`;
+    }
+    return escapeHTML((profile.username || "?").charAt(0).toUpperCase());
+}
+
+function showStatus(message) {
+    statusEl.textContent = message;
+}
+
+async function init() {
+    const { data, error } = await db.auth.getUser();
+
+    if (error || !data.user) {
+        listEl.innerHTML = '<div class="empty">سجّل الدخول أولًا لاستعمال الرسائل.<br><a style="color:var(--green)" href="login_new.html">تسجيل الدخول</a></div>';
+        return;
+    }
+
+    me = data.user;
+
+    const { data: requests, error: requestError } = await db
+        .from("friend_requests")
+        .select("sender_id, receiver_id, status")
+        .eq("status", "accepted")
+        .or(`sender_id.eq.${me.id},receiver_id.eq.${me.id}`);
+
+    if (requestError) {
+        listEl.innerHTML = '<div class="empty">جدول friend_requests أو صلاحياته غير جاهزة في Supabase.</div>';
+        return;
+    }
+
+    const friendIds = (requests || []).map(r =>
+        r.sender_id === me.id ? r.receiver_id : r.sender_id
+    );
+
+    if (!friendIds.length) {
+        listEl.innerHTML = '<div class="empty">ما عندكش أصدقاء بعد.<br><a href="friends.html" style="color:var(--green)">اكتشف اللاعبين</a></div>';
+        return;
+    }
+
+    const { data: profiles, error: profileError } = await db
+        .from("profiles")
+        .select("id, username, avatar_url")
+        .in("id", friendIds);
+
+    if (profileError) {
+        listEl.innerHTML = '<div class="empty">تعذر تحميل الأصدقاء. تحقق من صلاحيات profiles.</div>';
+        return;
+    }
+
+    friends = profiles || [];
+    renderFriends(friends);
+}
+
+function renderFriends(items) {
+    if (!items.length) {
+        listEl.innerHTML = '<div class="empty">لا توجد نتائج.</div>';
+        return;
+    }
+
+    listEl.innerHTML = items.map(friend => `
+        <div class="conversation ${selectedFriend?.id === friend.id ? "active" : ""}"
+             data-id="${escapeHTML(friend.id)}">
+            <div class="avatar">${avatarContent(friend)}</div>
+            <div class="conversation-info">
+                <strong>${escapeHTML(friend.username || "لاعب")}</strong>
+                <small>اضغط لفتح المحادثة</small>
+            </div>
+        </div>
+    `).join("");
+}
+
+async function openChat(friend) {
+    selectedFriend = friend;
+    document.getElementById("headerName").textContent = friend.username || "لاعب";
+    document.getElementById("headerInfo").textContent = "محادثة خاصة";
+    document.getElementById("headerAvatar").innerHTML = avatarContent(friend);
+
+    inputEl.disabled = false;
+    sendBtn.disabled = false;
+    showStatus("");
+
+    renderFriends(friends);
+    bodyEl.innerHTML = '<div class="empty">⏳ جاري تحميل الرسائل...</div>';
+
+    if (channel) {
+        await db.removeChannel(channel);
+        channel = null;
+    }
+
+    const { data, error } = await db
+        .from("messages")
+        .select("id, sender_id, receiver_id, content, created_at")
+        .or(
+            `and(sender_id.eq.${me.id},receiver_id.eq.${friend.id}),and(sender_id.eq.${friend.id},receiver_id.eq.${me.id})`
+        )
+        .order("created_at", { ascending: true })
+        .limit(200);
+
+    if (error) {
+        bodyEl.innerHTML = '<div class="empty">جدول messages أو صلاحياته غير جاهزة في Supabase.</div>';
+        return;
+    }
+
+    messages = data || [];
+    renderMessages();
+
+    channel = db.channel("private-chat-" + [me.id, friend.id].sort().join("-"))
+        .on("postgres_changes", {
+            event: "INSERT",
+            schema: "public",
+            table: "messages"
+        }, payload => {
+            const msg = payload.new;
+            const belongsToChat =
+                (msg.sender_id === me.id && msg.receiver_id === friend.id) ||
+                (msg.sender_id === friend.id && msg.receiver_id === me.id);
+
+            if (belongsToChat && !messages.some(m => m.id === msg.id)) {
+                messages.push(msg);
+                renderMessages();
+            }
+        })
+        .subscribe();
+}
+
+function renderMessages() {
+    if (!messages.length) {
+        bodyEl.innerHTML = '<div class="empty">ما كاين حتى رسالة هنا.<br>ابعث أول رسالة لصديقك! 👋</div>';
+        return;
+    }
+
+    bodyEl.innerHTML = messages.map(msg => {
+        const mine = msg.sender_id === me.id;
+        const time = msg.created_at
+            ? new Date(msg.created_at).toLocaleString("ar-DZ", {
+                hour: "2-digit", minute: "2-digit"
+            })
+            : "";
+
+        return `
+            <div class="bubble ${mine ? "mine" : ""}">
+                ${escapeHTML(msg.content)}
+                <small>${escapeHTML(time)}</small>
+            </div>`;
+    }).join("");
+
+    bodyEl.scrollTop = bodyEl.scrollHeight;
+}
+
+async function sendMessage() {
+    if (!me || !selectedFriend) return;
+
+    const content = inputEl.value.trim();
+    if (!content) return;
+
+    sendBtn.disabled = true;
+
+    const { data, error } = await db
+        .from("messages")
+        .insert({
+            sender_id: me.id,
+            receiver_id: selectedFriend.id,
+            content
+        })
+        .select("id, sender_id, receiver_id, content, created_at")
+        .single();
+
+    sendBtn.disabled = false;
+
+    if (error) {
+        showStatus("تعذر إرسال الرسالة. تحقق من جدول messages وسياسات INSERT.");
+        return;
+    }
+
+    if (!messages.some(m => m.id === data.id)) {
+        messages.push(data);
+    }
+
+    inputEl.value = "";
+    renderMessages();
+    inputEl.focus();
+}
+
+listEl.addEventListener("click", event => {
+    const item = event.target.closest(".conversation");
+    if (!item) return;
+
+    const friend = friends.find(f => f.id === item.dataset.id);
+    if (friend) openChat(friend);
+});
+
+document.getElementById("userSearch").addEventListener("input", event => {
+    const term = event.target.value.trim().toLowerCase();
+    renderFriends(friends.filter(f =>
+        (f.username || "").toLowerCase().includes(term)
+    ));
+});
+
+sendBtn.addEventListener("click", sendMessage);
+
+inputEl.addEventListener("keydown", event => {
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+    }
+});
+
+init();
+</script>
+</body>
+</html>
+```

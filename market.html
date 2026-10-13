@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EFOOTBALL COMMUNITY - السوق</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg:#080b09;
+  --panel:#111814;
+  --line:#294233;
+  --green:#39ff88;
+  --muted:#a6b9ac;
+}
+* { box-sizing:border-box }
+body {
+  margin:0;
+  background:radial-gradient(ellipse at top,#102719,#080b09 65%);
+  color:#f2fff6;
+  font:15px Tahoma,Arial,sans-serif;
+  line-height:1.6;
+}
+header {
+  text-align:center;
+  padding:22px 12px;
+  background:#080b09ee;
+  border-bottom:1px solid var(--line);
+}
+.brand {
+  font-size:clamp(22px,4vw,34px);
+  font-weight:900;
+  color:var(--green);
+  text-shadow:0 0 18px #39ff8840;
+}
+.muted,.hint { color:var(--muted);font-size:12px }
+nav {
+  display:flex;gap:8px;justify-content:center;
+  flex-wrap:wrap;margin-top:12px
+}
+nav a {
+  color:white;text-decoration:none;
+  border:1px solid var(--line);
+  padding:6px 10px;border-radius:9px;font-size:12px
+}
+main {
+  width:min(1100px,94%);
+  margin:22px auto 50px;
+  display:grid;gap:18px
+}
+.panel {
+  background:linear-gradient(145deg,#121a15,#0d120f);
+  border:1px solid var(--line);
+  border-radius:16px;padding:18px
+}
+.panel h2 { color:var(--green);margin:0 0 14px;font-size:20px }
+.grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:12px
+}
+.field { display:flex;flex-direction:column;gap:5px }
+.full { grid-column:1/-1 }
+label { font-size:13px;color:#d1e2d6 }
+input,textarea,select {
+  width:100%;padding:11px;
+  border:1px solid #2b4636;background:#080d0a;
+  color:#f2fff6;border-radius:10px;font:inherit
+}
+textarea { min-height:90px;resize:vertical }
+.types { display:flex;gap:12px;flex-wrap:wrap }
+.types label {
+  border:1px solid var(--line);border-radius:9px;padding:8px 12px
+}
+.types input { width:auto;accent-color:var(--green) }
+.actions { display:flex;gap:8px;flex-wrap:wrap;margin-top:13px }
+.btn {
+  border:0;border-radius:9px;padding:10px 14px;
+  background:var(--green);color:#06130a;font-weight:bold;cursor:pointer
+}
+.btn.secondary {
+  background:#1a2920;color:white;border:1px solid var(--line)
+}
+.btn.danger { background:#40191e;color:#ffdfe1 }
+.btn:disabled { opacity:.5;cursor:wait }
+.preview,.media {
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+  gap:8px;margin-top:8px
+}
+.tile {
+  position:relative;border:1px solid var(--line);
+  border-radius:9px;overflow:hidden;background:#050705
+}
+.tile img,.tile video {
+  width:100%;height:120px;object-fit:cover;display:block
+}
+.x {
+  position:absolute;top:4px;left:4px;
+  background:#000c;color:white;border:1px solid #777;
+  border-radius:6px;cursor:pointer
+}
+.toolbar {
+  display:grid;grid-template-columns:2fr 1fr;gap:8px;margin-bottom:14px
+}
+.cards {
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:14px
+}
+.card {
+  background:#0a100c;border:1px solid var(--line);
+  border-radius:14px;overflow:hidden;min-width:0
+}
+.media { grid-template-columns:1fr 1fr;margin:0;gap:3px }
+.media img,.media video {
+  width:100%;height:140px;object-fit:cover;background:#000
+}
+.body { padding:13px }
+.body h3 { margin:4px 0 7px;overflow-wrap:anywhere }
+.pill {
+  display:inline-block;color:var(--green);
+  border:1px solid #286743;border-radius:99px;
+  padding:2px 8px;font-size:11px
+}
+.price { color:var(--green);font-size:18px;font-weight:bold }
+.desc { white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px }
+.empty { text-align:center;color:var(--muted);padding:24px }
+#status { white-space:pre-wrap;margin-top:10px;color:var(--muted);font-size:13px }
+footer { text-align:center;color:#71877a;font-size:12px;padding:20px }
+@media(max-width:620px) {
+  .grid,.toolbar { grid-template-columns:1fr }
+  .panel { padding:13px }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">EFOOTBALL COMMUNITY</div>
+  <div class="muted">سوق الحسابات — بيع، تبديل أو الاثنين معًا</div>
+  <nav>
+    <a href="community.html">المجتمع</a>
+    <a href="friends.html">الأصدقاء</a>
+    <a href="messages.html">الرسائل</a>
+    <a href="tournaments.html">البطولات</a>
+    <a href="profile.html">الملف الشخصي</a>
+    <a href="login_new.html">تسجيل الدخول</a>
+  </nav>
+</header>
+
+<main>
+<section class="panel">
+  <h2>➕ انشر إعلانك</h2>
+  <p class="hint">لا تنشر كلمات المرور أو رموز التحقق أو معلومات استرجاع الحساب.</p>
+
+  <form id="form">
+    <div class="grid">
+      <div class="field full">
+        <label for="title">عنوان الإعلان *</label>
+        <input id="title" maxlength="80" required
+          placeholder="مثال: حساب فيه لاعبين أسطوريين">
+      </div>
+
+      <div class="field full">
+        <label>نوع الإعلان *</label>
+        <div class="types">
+          <label><input type="checkbox" name="deal" value="sale" checked> للبيع</label>
+          <label><input type="checkbox" name="deal" value="swap"> للتبديل</label>
+        </div>
+        <span class="hint">اختار البيع فقط أو التبديل فقط أو الاثنين معًا.</span>
+      </div>
+
+      <div class="field">
+        <label for="price">السعر (مطلوب للبيع)</label>
+        <input id="price" type="number" min="0.01" step="0.01"
+          placeholder="2500">
+      </div>
+
+      <div class="field">
+        <label for="currency">العملة</label>
+        <select id="currency">
+          <option value="DZD">DZD — دينار جزائري</option>
+          <option value="SAR">SAR — ريال سعودي</option>
+          <option value="EGP">EGP — جنيه مصري</option>
+          <option value="MAD">MAD — درهم مغربي</option>
+          <option value="TND">TND — دينار تونسي</option>
+          <option value="AED">AED — درهم إماراتي</option>
+          <option value="QAR">QAR — ريال قطري</option>
+          <option value="KWD">KWD — دينار كويتي</option>
+          <option value="JOD">JOD — دينار أردني</option>
+          <option value="IQD">IQD — دينار عراقي</option>
+          <option value="USD">USD — دولار</option>
+          <option value="EUR">EUR — يورو</option>
+          <option value="GBP">GBP — جنيه إسترليني</option>
+          <option value="TRY">TRY — ليرة تركية</option>
+        </select>
+      </div>
+
+      <div class="field full">
+        <label for="description">التفاصيل وشروط التبديل *</label>
+        <textarea id="description" maxlength="1500" required
+          placeholder="اكتب تفاصيل الحساب واللاعبين، وإذا اخترت التبديل اذكر الحساب الذي تقبله مقابل حسابك."></textarea>
+      </div>
+
+      <div class="field full">
+        <label for="contact">طريقة التواصل (اختيارية)</label>
+        <input id="contact" maxlength="100"
+          placeholder="اسم المستخدم في المنصة">
+      </div>
+
+      <div class="field full">
+        <label for="images">صور الحساب (حتى 10 صور، 5MB للصورة)</label>
+        <input id="images" type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+        <div class="hint">JPG / PNG / WEBP / GIF</div>
+        <div id="ip" class="preview"></div>
+      </div>
+
+      <div class="field full">
+        <label for="video">فيديو اختياري (ملف واحد حتى 50MB)</label>
+        <input id="video" type="file"
+          accept="video/mp4,video/webm,video/quicktime">
+        <div class="hint">MP4 / WEBM / MOV</div>
+        <div id="vp" class="preview"></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="publish" type="submit">نشر الإعلان</button>
+      <button class="btn secondary" type="reset">مسح الحقول</button>
+    </div>
+    <div id="status" role="status"></div>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>🛒 إعلانات السوق</h2>
+  <div class="toolbar">
+    <input id="search" placeholder="ابحث عن حساب أو لاعب أو بائع">
+    <select id="filter">
+      <option value="all">كل الإعلانات</option>
+      <option value="sale">للبيع</option>
+      <option value="swap">للتبديل</option>
+      <option value="both">بيع وتبديل</option>
+    </select>
+  </div>
+  <div id="cards" class="cards">
+    <div class="empty">جاري تحميل الإعلانات...</div>
+  </div>
+</section>
+</main>
+
+<footer>EFOOTBALL COMMUNITY · تحقق من تفاصيل الإعلان قبل أي اتفاق.</footer>
+
+<script>
+(() => {
+  const SUPABASE_URL = 'https://skidqfnomxrgdkvbwrgf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_DOOPVVEASu1YZExSNhD3bw_8jkBIOOu';
+  const BUCKET = 'market-media';
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const $ = id => document.getElementById(id);
+
+  const imageTypes = ['image/jpeg','image/png','image/webp','image/gif'];
+  const videoTypes = ['video/mp4','video/webm','video/quicktime'];
+  const currencyLabel = {
+    DZD:'دج',SAR:'ر.س',EGP:'ج.م',MAD:'د.م',TND:'د.ت',
+    AED:'د.إ',QAR:'ر.ق',KWD:'د.ك',JOD:'د.أ',IQD:'د.ع',
+    USD:'$',EUR:'€',GBP:'£',TRY:'₺'
+  };
+
+  let user = null;
+  let images = [];
+  let videoFile = null;
+  let videoObjectUrl = null;
+  let listings = [];
+
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+
+  const say = (s, bad=false) => {
+    $('status').textContent = s;
+    $('status').style.color = bad ? '#ff8990' : '#a6b9ac';
+  };
+
+  const uuid = () => crypto.randomUUID();
+
+  function selectedTypes() {
+    return [...document.querySelectorAll('[name=deal]:checked')]
+      .map(x => x.value);
+  }
+
+  function updatePriceFields() {
+    const sale = selectedTypes().includes('sale');
+    $('price').required = sale;
+    $('price').disabled = !sale;
+    $('currency').disabled = !sale;
+    if (!sale) $('price').value = '';
+  }
+
+  document.querySelectorAll('[name=deal]').forEach(x => {
+    x.addEventListener('change', () => {
+      if (!selectedTypes().length) x.checked = true;
+      updatePriceFields();
+    });
+  });
+  updatePriceFields();
+
+  function drawImages() {
+    $('ip').replaceChildren();
+    images.forEach((file, index) => {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      img.alt = file.name;
+
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'x';
+      remove.textContent = '×';
+      remove.setAttribute('aria-label', 'حذف الصورة من المعاينة');
+      remove.onclick = () => {
+        URL.revokeObjectURL(img.src);
+        images.splice(index, 1);
+        drawImages();
+      };
+
+      tile.append(img, remove);
+      $('ip').append(tile);
+    });
+  }
+
+  $('images').addEventListener('change', e => {
+    for (const file of [...e.target.files]) {
+      if (!imageTypes.includes(file.type)) {
+        say('صيغة صورة غير مقبولة: ' + file.name, true);
+        continue;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        say('الصورة أكبر من 5MB: ' + file.name, true);
+        continue;
+      }
+      if (images.length >= 10) {
+        say('الحد الأقصى هو 10 صور.', true);
+        break;
+      }
+      images.push(file);
+    }
+    e.target.value = '';
+    drawImages();
+  });
+
+  $('video').addEventListener('change', e => {
+    if (videoObjectUrl) URL.revokeObjectURL(videoObjectUrl);
+    videoFile = null;
+    videoObjectUrl = null;
+    $('vp').replaceChildren();
+
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+
+    if (!videoTypes.includes(file.type)) {
+      say('صيغة الفيديو غير مقبولة.', true);
+      return;
+    }
+    if (file.size > 50 * 1024 * 1024) {
+      say('الفيديو أكبر من 50MB.', true);
+      return;
+    }
+
+    videoFile = file;
+    videoObjectUrl = URL.createObjectURL(file);
+
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+
+    const video = document.createElement('video');
+    video.src = videoObjectUrl;
+    video.controls = true;
+
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'x';
+    remove.textContent = '×';
+    remove.setAttribute('aria-label', 'إزالة الفيديو');
+    remove.onclick = () => {
+      URL.revokeObjectURL(videoObjectUrl);
+      videoObjectUrl = null;
+      videoFile = null;
+      $('vp').replaceChildren();
+    };
+
+    tile.append(video, remove);
+    $('vp').append(tile);
+  });
+
+  async function getUser() {
+    const {data,error} = await db.auth.getUser();
+    if (error) throw error;
+    user = data.user || null;
+    return user;
+  }
+
+  async function uploadFile(file, name) {
+    const ext = file.name.split('.').pop()
+      .toLowerCase().replace(/[^a-z0-9]/g, '') || 'bin';
+
+    const path = `${user.id}/${uuid()}/${name}.${ext}`;
+    const {error} = await db.storage.from(BUCKET).upload(path, file, {
+      contentType:file.type,
+      upsert:false,
+      cacheControl:'3600'
+    });
+    if (error) throw error;
+
+    const {data} = db.storage.from(BUCKET).getPublicUrl(path);
+    return data.publicUrl;
+  }
+
+  function storagePath(url) {
+    const marker = `/storage/v1/object/public/${BUCKET}/`;
+    if (typeof url !== 'string' || !url.startsWith(SUPABASE_URL + marker)) {
+      return null;
+    }
+    try {
+      return decodeURIComponent(url.slice(
+        (SUPABASE_URL + marker).length
+      ).split('?')[0]);
+    } catch {
+      return null;
+    }
+  }
+
+  async function removeFiles(urls) {
+    const paths = urls.map(storagePath).filter(Boolean);
+    if (!paths.length) return;
+    const {error} = await db.storage.from(BUCKET).remove(paths);
+    if (error) console.warn('تعذر حذف بعض الملفات:', error.message);
+  }
+
+  $('form').addEventListener('reset', () => {
+    images = [];
+    if (videoObjectUrl) URL.revokeObjectURL(videoObjectUrl);
+    videoFile = null;
+    videoObjectUrl = null;
+    $('ip').replaceChildren();
+    $('vp').replaceChildren();
+    setTimeout(updatePriceFields, 0);
+  });
+
+  $('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    $('publish').disabled = true;
+
+    const uploaded = [];
+    try {
+      await getUser();
+      if (!user) {
+        say('سجّل الدخول أولًا من login_new.html.', true);
+        return;
+      }
+
+      const kinds = selectedTypes();
+      const price = Number($('price').value);
+
+      if (!kinds.length) {
+        say('اختار البيع أو التبديل.', true);
+        return;
+      }
+      if (kinds.includes('sale') &&
+          (!Number.isFinite(price) || price <= 0)) {
+        say('أدخل سعرًا صحيحًا للبيع.', true);
+        return;
+      }
+
+      if (!$('title').value.trim() || !$('description').value.trim()) {
+        say('اكتب عنوان الإعلان والتفاصيل.', true);
+        return;
+      }
+
+      say('جاري رفع الصور والفيديو...');
+      const imageUrls = [];
+
+      for (let i=0; i<images.length; i++) {
+        const url = await uploadFile(images[i], `image-${i+1}`);
+        uploaded.push(url);
+        imageUrls.push(url);
+      }
+
+      let videoUrl = null;
+      if (videoFile) {
+        videoUrl = await uploadFile(videoFile, 'video');
+        uploaded.push(videoUrl);
+      }
+
+      const row = {
+        seller_id:user.id,
+        title:$('title').value.trim(),
+        description:$('description').value.trim(),
+        deal_type:kinds.length === 2 ? 'both' : kinds[0],
+        price:kinds.includes('sale') ? price : null,
+        currency:kinds.includes('sale') ? $('currency').value : null,
+        contact:$('contact').value.trim() || null,
+        image_urls:imageUrls,
+        video_url:videoUrl
+      };
+
+      const {error} = await db.from('accounts_market').insert(row);
+      if (error) throw error;
+
+      say('تم نشر الإعلان بنجاح ✅');
+      $('form').reset();
+      await loadListings();
+    } catch (err) {
+      await removeFiles(uploaded);
+      console.error(err);
+      say('فشل النشر: ' + (err.message || 'خطأ غير معروف') +
+          '\nتحقق من تسجيل الدخول وSQL وسياسات Supabase.', true);
+    } finally {
+      $('publish').disabled = false;
+      updatePriceFields();
+    }
+  });
+
+  function safeMediaUrl(url) {
+    try {
+      const u = new URL(url);
+      return u.protocol === 'https:' &&
+        u.origin === SUPABASE_URL ? u.href : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function mediaHtml(item) {
+    const imgs = Array.isArray(item.image_urls) ? item.image_urls : [];
+    const safeImages = imgs.map(safeMediaUrl).filter(Boolean).slice(0,10);
+    const video = safeMediaUrl(item.video_url);
+    if (!safeImages.length && !video) return '';
+
+    let out = '<div class="media">';
+    safeImages.slice(0,3).forEach(url => {
+      out += `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">
+        <img loading="lazy" src="${esc(url)}" alt="صورة الحساب"></a>`;
+    });
+    if (video) {
+      out += `<video controls preload="metadata" src="${esc(video)}"></video>`;
+    }
+    if (safeImages.length > 3) {
+      out += `<a href="${esc(safeImages[3])}" target="_blank" rel="noopener noreferrer">
+        <div class="empty">عرض الصور الأخرى (${safeImages.length-3})</div></a>`;
+    }
+    return out + '</div>';
+  }
+
+  function dealLabel(type) {
+    return type === 'both' ? 'بيع وتبديل' :
+      type === 'swap' ? 'للتبديل' : 'للبيع';
+  }
+
+  function renderListings() {
+    const term = $('search').value.trim().toLowerCase();
+    const filter = $('filter').value;
+
+    const rows = listings.filter(item => {
+      const type = item.deal_type || 'sale';
+      const searchable = [
+        item.title,item.description,item.seller,item.contact
+      ].join(' ').toLowerCase();
+      return (filter === 'all' || type === filter) &&
+        searchable.includes(term);
+    });
+
+    if (!rows.length) {
+      $('cards').innerHTML =
+        '<div class="empty">ما كاين حتى إعلان يطابق البحث.</div>';
+      return;
+    }
+
+    $('cards').innerHTML = rows.map(item => {
+      const mine = user && user.id === item.seller_id;
+      const type = item.deal_type || 'sale';
+      const price = type === 'swap' ? 'تبديل' :
+        `${esc(item.price ?? '')} ${esc(currencyLabel[item.currency] || item.currency || '')}`;
+
+      return `<article class="card">
+        ${mediaHtml(item)}
+        <div class="body">
+          <span class="pill">${dealLabel(type)}</span>
+          <h3>${esc(item.title)}</h3>
+          <div class="price">${price}</div>
+          <div class="muted">
+            البائع: ${esc(item.seller || 'عضو')}
+            · ${item.created_at ?
+              new Date(item.created_at).toLocaleDateString('ar-DZ') : ''}
+          </div>
+          <p class="desc">${esc(item.description)}</p>
+          ${item.contact ?
+            `<div class="muted">التواصل: ${esc(item.contact)}</div>` : ''}
+          <div class="actions">
+            <button class="btn secondary copy"
+              data-id="${esc(item.id)}">نسخ التفاصيل</button>
+            ${mine ? `<button class="btn danger delete"
+              data-id="${esc(item.id)}">حذف إعلاني</button>` : ''}
+          </div>
+        </div>
+      </article>`;
+    }).join('');
+
+    document.querySelectorAll('.copy').forEach(button => {
+      button.onclick = async () => {
+        const item = listings.find(x => String(x.id) === button.dataset.id);
+        if (!item) return;
+
+        const text = `${item.title}
+النوع: ${dealLabel(item.deal_type || 'sale')}
+السعر: ${item.deal_type === 'swap' ? 'تبديل' :
+  `${item.price ?? ''} ${item.currency ?? ''}`}
+التفاصيل: ${item.description}
+البائع: ${item.seller || 'عضو'}
+${item.contact ? 'التواصل: ' + item.contact : ''}`;
+
+        try {
+          await navigator.clipboard.writeText(text);
+          button.textContent = 'تم النسخ ✓';
+        } catch {
+          window.prompt('انسخ التفاصيل:', text);
+        }
+      };
+    });
+
+    document.querySelectorAll('.delete').forEach(button => {
+      button.onclick = () => deleteListing(button.dataset.id);
+    });
+  }
+
+  async function loadListings() {
+    const {data,error} = await db.from('accounts_market')
+      .select('id,seller_id,title,description,deal_type,price,currency,contact,image_urls,video_url,created_at')
+      .order('created_at', {ascending:false});
+
+    if (error) {
+      console.error(error);
+      $('cards').innerHTML =
+        '<div class="empty">تعذر تحميل الإعلانات. تحقق من SQL وسياسات الجدول.</div>';
+      return;
+    }
+
+    listings = data || [];
+    const ids = [...new Set(listings.map(x => x.seller_id).filter(Boolean))];
+    const profileNames = {};
+
+    if (ids.length) {
+      const {data:profiles,error:profileError} = await db
+        .from('profiles').select('id,username').in('id',ids);
+
+      if (!profileError) {
+        (profiles || []).forEach(p => profileNames[p.id] = p.username);
+      }
+    }
+
+    listings.forEach(item => {
+      item.seller = profileNames[item.seller_id] || 'عضو';
+    });
+    renderListings();
+  }
+
+  async function deleteListing(id) {
+    try {
+      await getUser();
+      const item = listings.find(x => String(x.id) === String(id));
+
+      if (!item || !user || item.seller_id !== user.id) {
+        alert('تقدر تحذف إعلاناتك فقط.');
+        return;
+      }
+
+      if (!confirm('متأكد بلي حاب تحذف الإعلان؟')) return;
+
+      const {error} = await db.from('accounts_market')
+        .delete().eq('id', item.id).eq('seller_id', user.id);
+
+      if (error) throw error;
+
+      await removeFiles([
+        ...(Array.isArray(item.image_urls) ? item.image_urls : []),
+        ...(item.video_url ? [item.video_url] : [])
+      ]);
+
+      await loadListings();
+    } catch (err) {
+      alert('تعذر حذف الإعلان: ' + err.message);
+    }
+  }
+
+  $('search').addEventListener('input', renderListings);
+  $('filter').addEventListener('change', renderListings);
+
+  db.auth.onAuthStateChange((_event, session) => {
+    user = session?.user || null;
+    renderListings();
+  });
+
+  getUser().then(loadListings).catch(err => {
+    console.error(err);
+    $('cards').innerHTML =
+      '<div class="empty">تعذر الاتصال بحسابك في Supabase.</div>';
+  });
+})();
+</script>
+</body>
+</html>

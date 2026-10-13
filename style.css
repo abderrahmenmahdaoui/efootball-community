@@ -1,0 +1,1409 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #0b0f17;
+  --surface: #131a26;
+  --surface2: #1a2433;
+  --border: #273346;
+  --text: #f1f5fb;
+  --muted: #91a0b6;
+  --accent: #45a7ff;
+  --green: #40d9a0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+button,
+textarea,
+input {
+  font: inherit;
+}
+
+button,
+a,
+label {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* الشريط العلوي */
+
+.topbar {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 14px 5%;
+  background: rgba(13, 19, 30, 0.97);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+}
+
+.brand-icon {
+  font-size: 30px;
+}
+
+.brand b {
+  color: var(--accent);
+}
+
+.online {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.online i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  margin-left: 5px;
+}
+
+/* تقسيم الصفحة */
+
+.layout {
+  width: min(1440px, 96%);
+  margin: 28px auto;
+  display: grid;
+  grid-template-columns: 230px minmax(0, 680px) 230px;
+  gap: 24px;
+  align-items: start;
+}
+
+.sidebar,
+.right-panel {
+  position: sticky;
+  top: 100px;
+}
+
+.sidebar {
+  padding: 18px 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 5px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-mini strong {
+  display: block;
+  font-size: 12px;
+}
+
+.profile-mini small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: white;
+  background: linear-gradient(135deg, #227dff, #8058e8);
+  font-weight: 900;
+}
+
+.main-avatar {
+  width: 43px;
+  height: 43px;
+  font-size: 22px;
+}
+
+.menu-title {
+  margin: 20px 10px 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.menu-item {
+  display: block;
+  padding: 12px;
+  margin: 5px 0;
+  color: #c5d0df;
+  border-radius: 9px;
+  font-size: 14px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  color: white;
+  background: #1d3552;
+}
+
+.menu-item.active {
+  border-right: 3px solid var(--accent);
+}
+
+.sidebar-note {
+  margin-top: 25px;
+  padding: 15px;
+  background: #172438;
+  border-radius: 12px;
+}
+
+.sidebar-note span {
+  font-size: 25px;
+}
+
+.sidebar-note strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.sidebar-note p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.copyright {
+  display: block;
+  margin-top: 25px;
+  text-align: center;
+  color: #61728a;
+  font-size: 10px;
+}
+
+/* المحتوى الرئيسي */
+
+main {
+  min-width: 0;
+}
+
+.welcome {
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+  padding: 30px;
+  margin-bottom: 22px;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(69,167,255,0.22), transparent 35%),
+    linear-gradient(125deg, #172b47, #172039 70%, #252047);
+  border: 1px solid #2b4768;
+  border-radius: 17px;
+}
+
+.eyebrow {
+  color: #83c5ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.welcome h1 {
+  position: relative;
+  z-index: 1;
+  margin: 13px 0 10px;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.4;
+}
+
+.welcome p {
+  position: relative;
+  z-index: 1;
+  max-width: 390px;
+  color: #c3d0e2;
+  font-size: 14px;
+}
+
+.welcome-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 17px;
+  background: var(--accent);
+  color: #071321;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.football-decoration {
+  position: absolute;
+  left: 22px;
+  bottom: 12px;
+  font-size: 95px;
+  opacity: 0.14;
+  transform: rotate(-20deg);
+}
+
+/* صندوق إنشاء المنشور */
+
+.composer,
+.post-card,
+.empty-state {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+.composer {
+  padding: 21px;
+  margin-bottom: 30px;
+}
+
+.section-heading,
+.feed-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+
+.section-heading h2,
+.feed-heading h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.section-heading p,
+.feed-heading p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.heading-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: var(--accent);
+  background: #1a2b43;
+  border-radius: 12px;
+  font-size: 22px;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 110px;
+  padding: 14px;
+  color: var(--text);
+  background: #0b111b;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  outline: none;
+  resize: vertical;
+  font-size: 14px;
+}
+
+textarea:focus,
+.comment-input:focus {
+  border-color: var(--accent);
+}
+
+textarea::placeholder,
+.comment-input::placeholder {
+  color: #718098;
+}
+
+.composer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 13px;
+}
+
+.image-picker {
+  padding: 10px 13px;
+  color: #a9d6ff;
+  background: #18283c;
+  border: 1px solid #2b4768;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.image-picker:hover {
+  background: #203852;
+}
+
+.publish-button {
+  padding: 11px 20px;
+  color: white;
+  background: var(--accent);
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.publish-button:hover {
+  background: #72bbff;
+}
+
+.hint {
+  display: block;
+  margin-top: 12px;
+  color: #73839a;
+  font-size: 11px;
+}
+
+/* قائمة المنشورات */
+
+.feed-heading {
+  margin-bottom: 17px;
+}
+
+.feed-label {
+  color: #85bfff;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.post-card {
+  padding: 18px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.post-card:hover {
+  border-color: #3b5878;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.post-avatar {
+  width: 43px;
+  height: 43px;
+  font-size: 19px;
+}
+
+.author-info {
+  min-width: 0;
+}
+
+.author-info strong {
+  display: block;
+  font-size: 13px;
+}
+
+.author-info small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.post-text {
+  margin: 17px 0;
+  font-size: 14px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.post-image {
+  display: block;
+  width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  margin: 12px 0;
+  background: #080c13;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.post-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 0;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+}
+
+.post-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.action-button {
+  padding: 10px;
+  color: #bdc9d9;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.action-button:hover {
+  background: var(--surface2);
+}
+
+.action-button.liked {
+  color: #ff6685;
+  background: #2a1928;
+}
+
+/* التعليقات */
+
+.comments-list {
+  padding-top: 8px;
+}
+
+.comment-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px;
+  background: #101722;
+  border-radius: 9px;
+}
+
+.comment-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  color: white;
+  background: #354c70;
+  border-radius: 50%;
+  font-size: 11px;
+}
+
+.comment-text {
+  flex: 1;
+  min-width: 0;
+  margin: 2px 0;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.comment-date {
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.comment-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.comment-input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  color: white;
+  background: #0b111b;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  outline: none;
+  font-size: 12px;
+}
+
+.comment-send {
+  padding: 9px 13px;
+  color: white;
+  background: #253c5a;
+  border: 1px solid #365578;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.comment-send:hover {
+  background: #31547d;
+}
+
+/* لا توجد منشورات */
+
+.empty-state {
+  padding: 35px 18px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 38px;
+}
+
+.empty-state h3 {
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.empty-state p {
+  margin-top: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* العمود الجانبي */
+
+.side-card {
+  padding: 18px;
+  margin-bottom: 15px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.side-card-icon {
+  font-size: 29px;
+}
+
+.side-card h3 {
+  margin: 7px 0;
+  font-size: 14px;
+}
+
+.side-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.tips {
+  border-top: 2px solid #e6bd58;
+}
+
+.rules {
+  border-top: 2px solid var(--green);
+}
+
+footer {
+  padding: 25px 5px;
+  color: #697b93;
+  text-align: center;
+  font-size: 10px;
+}
+
+/* الهواتف */
+
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 17px;
+  }
+
+  .right-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .topbar {
+    min-height: 65px;
+    padding: 12px 4%;
+  }
+
+  .brand {
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .brand-icon {
+    font-size: 25px;
+  }
+
+  .online {
+    font-size: 10px;
+  }
+
+  .layout {
+    width: 94%;
+    display: block;
+    margin: 18px auto;
+  }
+
+  .sidebar {
+    position: static;
+    padding: 8px;
+    margin-bottom: 17px;
+  }
+
+  .profile-mini,
+  .menu-title,
+  .sidebar-note,
+  .copyright {
+    display: none;
+  }
+
+  .sidebar {
+    display: flex;
+    gap: 5px;
+  }
+
+  .menu-item {
+    flex: 1;
+    margin: 0;
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 11px;
+  }
+
+  .welcome {
+    min-height: 230px;
+    padding: 24px 19px;
+  }
+
+  .welcome h1 {
+    font-size: 29px;
+  }
+
+  .welcome p {
+    max-width: 75%;
+    font-size: 12px;
+  }
+
+  .football-decoration {
+    left: 8px;
+    bottom: 10px;
+    font-size: 65px;
+  }
+
+  .composer {
+    padding: 15px;
+  }
+
+  .section-heading h2,
+  .feed-heading h2 {
+    font-size: 16px;
+  }
+
+  .feed-label {
+    display: none;
+  }
+
+  .post-card {
+    padding: 14px;
+  }
+
+  .post-image {
+    max-height: 360px;
+  }
+
+  .comment-row {
+    flex-wrap: wrap;
+  }
+
+  .comment-date {
+    width: 100%;
+    margin-right: 36px;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand {
+    font-size: 11px;
+  }
+
+  .online {
+    font-size: 9px;
+  }
+
+  .composer-bottom {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .image-picker,
+  .publish-button {
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.auth-card {
+  width: min(390px, calc(100% - 40px));
+  margin: 45px auto;
+  padding: 30px 24px;
+  box-sizing: border-box;
+  color: #f4f7ff;
+  text-align: center;
+  direction: rtl;
+  background: linear-gradient(145deg, #111d36, #080e1d);
+  border: 1px solid #263d65;
+  border-radius: 22px;
+  box-shadow: 0 0 35px #0066ff18;
+}
+
+.auth-logo {
+  width: 75px;
+  height: 75px;
+  margin: 0 auto 15px;
+  display: grid;
+  place-items: center;
+  font-size: 40px;
+  background: #10284c;
+  border: 1px solid #2584ff;
+  border-radius: 22px;
+  box-shadow: 0 0 25px #087cff30;
+}
+
+.auth-tag {
+  color: #4aa3ff;
+  font-size: 11px;
+  letter-spacing: 2px;
+  direction: ltr;
+}
+
+.auth-card h2 {
+  font-size: 22px;
+  margin: 12px 0;
+  direction: ltr;
+}
+
+.auth-card h2 span {
+  color: #42a5ff;
+}
+
+.auth-subtitle {
+  color: #a8b7d1;
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+.auth-card label {
+  display: block;
+  text-align: right;
+  margin: 15px 0 8px;
+  font-size: 13px;
+  color: #dce8ff;
+}
+
+.auth-card input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  border-radius: 11px;
+  border: 1px solid #293d5e;
+  background: #080f20;
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+.auth-card input:focus {
+  border-color: #3495ff;
+  box-shadow: 0 0 0 3px #1683ff20;
+}
+
+.auth-card button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 13px;
+  border-radius: 11px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.auth-card button:hover {
+  transform: translateY(-2px);
+}
+
+.auth-primary {
+  border: none;
+  color: white;
+  background: linear-gradient(90deg, #0878ff, #3565ff);
+}
+
+.auth-secondary {
+  color: #c9e2ff;
+  background: #14233d;
+  border: 1px solid #31517c;
+}
+
+#authMessage {
+  color: #65b5ff;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.auth-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #26344d;
+  color: #7185a5;
+  font-size: 10px;
+  direction: ltr;
+  letter-spacing: 1px;
+}
+
+/* ==============================
+   EFOOTBALL MARKET
+   سوق المجتمع
+============================== */
+
+.market-section {
+  margin-top: 30px;
+  padding: 24px;
+  background: linear-gradient(145deg, #101713, #080c0a);
+  border: 1px solid #293b2d;
+  border-radius: 18px;
+  color: #f5f7f5;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+  scroll-margin-top: 25px;
+}
+
+.market-section .feed-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.market-section .feed-heading h2 {
+  margin: 10px 0;
+  color: #ffffff;
+  font-size: 25px;
+}
+
+.market-section .feed-heading p {
+  margin: 0;
+  color: #9ca99e;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.market-section .eyebrow {
+  color: #b7ff35;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.market-section .heading-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  background: rgba(183, 255, 53, 0.08);
+  border: 1px solid rgba(183, 255, 53, 0.2);
+  font-size: 25px;
+}
+
+.market-notice {
+  margin: 20px 0;
+  padding: 14px 16px;
+  background: rgba(255, 193, 7, 0.06);
+  border: 1px solid rgba(255, 193, 7, 0.22);
+  border-radius: 12px;
+  color: #e8d69d;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.market-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin: 20px 0;
+}
+
+.market-section .publish-button {
+  border: 1px solid #c9ff77;
+  border-radius: 10px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #c8ff65, #91e51b);
+  color: #101609;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.market-section .publish-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(183, 255, 53, 0.16);
+}
+
+.listing-form {
+  margin: 20px 0;
+  padding: 20px;
+  background: #0b100d;
+  border: 1px solid #2d4031;
+  border-radius: 14px;
+}
+
+.listing-form[hidden] {
+  display: none !important;
+}
+
+.listing-form label {
+  display: block;
+  margin: 15px 0 8px;
+  color: #d8e4d9;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.listing-form input,
+.listing-form textarea,
+.listing-form select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  background: #080d0a;
+  border: 1px solid #2b382e;
+  border-radius: 9px;
+  color: #ffffff;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.listing-form input::placeholder,
+.listing-form textarea::placeholder {
+  color: #68776c;
+}
+
+.listing-form input:focus,
+.listing-form textarea:focus,
+.listing-form select:focus {
+  outline: none;
+  border-color: #b7ff35;
+  box-shadow: 0 0 0 3px rgba(183, 255, 53, 0.08);
+}
+
+.listing-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.listing-form select option {
+  background: #101713;
+  color: white;
+}
+
+.listing-form .action-button {
+  margin: 8px 5px;
+  padding: 11px 18px;
+  border: 1px solid #354239;
+  border-radius: 9px;
+  background: #151d17;
+  color: #dce6de;
+  cursor: pointer;
+}
+
+#listingMessage {
+  color: #b7ff35;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* شبكة عروض السوق */
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.market-grid .empty-state {
+  grid-column: 1 / -1;
+  padding: 30px 15px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px dashed #344438;
+  border-radius: 14px;
+}
+
+.market-grid .empty-icon {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 35px;
+}
+
+.market-grid .empty-state h3 {
+  color: #e9f3eb;
+  margin: 8px 0;
+}
+
+.market-grid .empty-state p {
+  color: #89988c;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* الهواتف */
+@media (max-width: 650px) {
+  .market-section {
+    padding: 16px;
+    margin-top: 20px;
+    border-radius: 14px;
+  }
+
+  .market-section .feed-heading h2 {
+    font-size: 21px;
+  }
+
+  .market-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .listing-form {
+    padding: 14px;
+  }
+
+  .market-section .publish-button {
+    max-width: 100%;
+  }
+}
+/* =====================================
+   EFOOTBALL COMMUNITY — NEON GREEN THEME
+   تصميم أسود وأخضر نيون
+===================================== */
+
+:root {
+  --background: #050705;
+  --surface: #0c110d;
+  --surface2: #141d14;
+  --border: #263728;
+  --text: #f4f8f2;
+  --muted: #9ba99a;
+  --accent: #b7ff35;
+  --green: #b7ff35;
+}
+
+/* الخلفية العامة */
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, #182315 0%, transparent 48%),
+    #050705;
+  color: var(--text);
+}
+
+/* الشريط العلوي */
+.topbar {
+  background: rgba(5, 8, 5, 0.94);
+  border-bottom: 1px solid #263728;
+  box-shadow: 0 5px 25px #00000055;
+  backdrop-filter: blur(14px);
+}
+
+.brand b {
+  color: #b7ff35;
+  text-shadow: 0 0 14px #b7ff3540;
+}
+
+.online i {
+  background: #b7ff35;
+  box-shadow: 0 0 10px #b7ff35;
+}
+
+/* البطاقات الجانبية */
+.sidebar,
+.right-panel .side-card {
+  background: linear-gradient(145deg, #111811, #090c09);
+  border-color: #293a29;
+  box-shadow: 0 10px 30px #00000030;
+}
+
+.menu-item {
+  color: #c6d2c2;
+  transition: 0.2s ease;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  color: #c8ff65;
+  background: #1a2818;
+}
+
+.menu-item.active {
+  border-right-color: #b7ff35;
+}
+
+.sidebar-note {
+  background: #121b11;
+  border: 1px solid #2b3d27;
+}
+
+.avatar {
+  background: linear-gradient(135deg, #b7ff35, #3d8024);
+  color: #0a1007;
+}
+
+/* واجهة الترحيب */
+.welcome {
+  background:
+    radial-gradient(circle at 85% 15%, #b7ff3520, transparent 38%),
+    linear-gradient(135deg, #141d12, #090d09 75%, #182015);
+  border: 1px solid #35492b;
+  box-shadow: 0 12px 35px #00000045;
+}
+
+.eyebrow {
+  color: #b7ff35;
+}
+
+.welcome h1 {
+  text-shadow: 0 0 24px #b7ff3512;
+}
+
+.welcome p {
+  color: #c1cdbd;
+}
+
+.welcome-link {
+  background: linear-gradient(135deg, #c8ff65, #91e51b);
+  color: #101609;
+  border: 1px solid #d5ff93;
+  transition: 0.2s ease;
+}
+
+.welcome-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px #b7ff3530;
+}
+
+.football-decoration {
+  filter: grayscale(1);
+}
+
+/* صندوق النشر والمنشورات */
+.composer,
+.post-card,
+.empty-state {
+  background: linear-gradient(145deg, #101610, #090c09);
+  border-color: #293829;
+  box-shadow: 0 8px 25px #00000025;
+}
+
+.composer,
+.post-card {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.composer:focus-within,
+.post-card:hover {
+  border-color: #5a783d;
+  box-shadow: 0 8px 28px #00000035;
+}
+
+.heading-icon {
+  color: #b7ff35;
+  background: #1a2816;
+  border: 1px solid #34492a;
+}
+
+textarea,
+.comment-input {
+  background: #070a07;
+  color: #f4f8f2;
+  border-color: #2b3b2b;
+}
+
+textarea:focus,
+.comment-input:focus {
+  border-color: #b7ff35;
+  box-shadow: 0 0 0 3px #b7ff3515;
+}
+
+textarea::placeholder,
+.comment-input::placeholder {
+  color: #758471;
+}
+
+/* أزرار النشر */
+.publish-button {
+  color: #101609;
+  background: linear-gradient(135deg, #c8ff65, #91e51b);
+  border: 1px solid #d5ff93;
+  transition: 0.2s ease;
+}
+
+.publish-button:hover {
+  background: #d3ff8a;
+  box-shadow: 0 0 20px #b7ff3525;
+  transform: translateY(-2px);
+}
+
+.image-picker {
+  color: #c8ff8a;
+  background: #131d11;
+  border-color: #35492b;
+}
+
+.image-picker:hover {
+  background: #1b2a16;
+  border-color: #7ba34e;
+}
+
+.feed-label {
+  color: #b7ff35;
+}
+
+/* صور المنشورات */
+.post-image {
+  background: #050705;
+  border-color: #293829;
+}
+
+/* الأزرار والتعليقات */
+.action-button {
+  color: #c1cdbd;
+}
+
+.action-button:hover {
+  color: #c8ff65;
+  background: #182116;
+}
+
+.action-button.liked {
+  color: #ff6685;
+  background: #2a1920;
+}
+
+.comment-row {
+  background: #0b100b;
+  border: 1px solid #1e2a1e;
+}
+
+.comment-avatar {
+  background: linear-gradient(135deg, #b7ff35, #467e2a);
+  color: #101609;
+}
+
+.comment-send {
+  background: #182516;
+  border-color: #3d5430;
+  color: #c8ff8a;
+}
+
+.comment-send:hover {
+  background: #26391d;
+  border-color: #719b4b;
+}
+
+/* البطاقات الجانبية */
+.side-card {
+  background: linear-gradient(145deg, #101610, #090c09);
+  border-color: #293829;
+}
+
+.tips {
+  border-top-color: #d4b75c;
+}
+
+.rules {
+  border-top-color: #b7ff35;
+}
+
+/* نموذج تسجيل الدخول واختيار اسم المستخدم */
+.auth-card {
+  background: linear-gradient(145deg, #111811, #070a07);
+  border-color: #35492b;
+  box-shadow: 0 0 35px #b7ff3510;
+}
+
+.auth-logo {
+  color: #b7ff35;
+  background: #172315;
+  border-color: #8bcf36;
+  box-shadow: 0 0 25px #b7ff3520;
+}
+
+.auth-tag,
+.auth-card h2 span {
+  color: #b7ff35;
+}
+
+.auth-card input {
+  background: #080c08;
+  border-color: #30412c;
+}
+
+.auth-card input:focus {
+  border-color: #b7ff35;
+  box-shadow: 0 0 0 3px #b7ff3518;
+}
+
+.auth-primary {
+  color: #101609;
+  background: linear-gradient(90deg, #c8ff65, #91e51b);
+}
+
+.auth-primary:hover {
+  box-shadow: 0 0 22px #b7ff3525;
+}
+
+.auth-secondary {
+  color: #d4e6c8;
+  background: #152014;
+  border-color: #3a5130;
+}
+
+#authMessage {
+  color: #c8ff65;
+}
+
+.auth-footer {
+  border-top-color: #293829;
+}
+
+/* سوق المجتمع */
+.market-section {
+  background: linear-gradient(145deg, #101713, #080c0a);
+}

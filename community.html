@@ -1,0 +1,687 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EFOOTBALL COMMUNITY</title>
+  <link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="brand-icon">⚽</span>
+      <span>EFOOTBALL <b>COMMUNITY</b></span>
+    </a>
+    <span class="online"><i></i> مجتمع اللاعبين</span>
+  </header>
+
+  
+  
+  
+<section id="authSection" class="auth-card">
+  <div class="auth-logo">⚽</div>
+
+  <p class="auth-tag">THE HOME OF eFOOTBALL</p>
+  <h2>EFOOTBALL <span>COMMUNITY</span></h2>
+  <p class="auth-subtitle">
+    ادخل للمجتمع وشارك شغفك بكرة القدم
+  </p>
+
+  <form id="authForm">
+    <label for="authEmail">البريد الإلكتروني</label>
+    <input
+      id="authEmail"
+      type="email"
+      placeholder="name@example.com"
+      autocomplete="email"
+      required
+    >
+
+    <label for="authPassword">كلمة المرور</label>
+    <input
+      id="authPassword"
+      type="password"
+      placeholder="أدخل كلمة المرور"
+      autocomplete="current-password"
+      minlength="6"
+      required
+    >
+
+    <button type="submit" id="loginBtn" class="auth-primary">
+      تسجيل الدخول
+    </button>
+
+    <button type="button" id="signupBtn" class="auth-secondary">
+      إنشاء حساب جديد
+    </button>
+
+    <button type="button" id="logoutBtn" hidden>
+      تسجيل الخروج
+    </button>
+
+    <p id="authMessage" role="status"></p>
+  </form>
+
+  <div class="auth-footer">
+    EFOOTBALL COMMUNITY · PLAY TOGETHER
+  </div>
+</section>
+
+<section id="usernameSection" class="auth-card" hidden>
+  <h2>⚽ اختار اسمك في المجتمع</h2>
+  <p>هذا هو الاسم اللي يشوفوه اللاعبين الآخرين</p>
+
+  <form id="usernameForm">
+    <input
+      type="text"
+      id="usernameInput"
+      placeholder="مثال: ABR_Efootball"
+      minlength="3"
+      maxlength="20"
+      required
+    >
+
+    <button type="submit" class="auth-primary">
+      حفظ الاسم والمتابعة
+    </button>
+
+    <p id="usernameMessage" role="status"></p>
+  </form>
+</section>
+<div class="layout">
+    <aside class="sidebar">
+      <div class="profile-mini">
+        <div class="avatar main-avatar">E</div>
+        <div>
+          <strong>EFOOTBALL FAN</strong>
+          <small>عضو في المجتمع</small>
+        </div>
+      </div>
+
+      <p class="menu-title">القائمة الرئيسية</p>
+      <a class="menu-item active" href="#home">🏠 الرئيسية</a>
+      <a class="menu-item" href="#create">✍️ إنشاء منشور</a>
+      <a class="menu-item" href="#feed">📰 المنشورات</a>
+<a class="menu-item" href="#market">⚽ سوق الحسابات</a>
+      <div class="sidebar-note">
+        <span>⚽</span>
+        <strong>اللعبة تجمعنا</strong>
+        <p>شارك لحظاتك وتشكيلتك مع مجتمع eFootball.</p>
+      </div>
+
+      <small class="copyright">EFOOTBALL COMMUNITY</small>
+    </aside>
+
+    <main id="home">
+      <section class="welcome">
+        <span class="eyebrow">WELCOME TO THE COMMUNITY</span>
+        <h1>عالم eFootball<br>يجمعنا 🔥</h1>
+        <p>شارك أهدافك، تشكيلتك وأفضل لحظاتك مع اللاعبين.</p>
+        <a href="#create" class="welcome-link">ابدأ النشر ↓</a>
+        <div class="football-decoration">⚽</div>
+      </section>
+
+      <section class="composer" id="create">
+        <div class="section-heading">
+          <div>
+            <h2>واش راك حاب تشارك؟</h2>
+            <p>خلي مجتمع اللاعبين يشوف منشورك</p>
+          </div>
+          <span class="heading-icon">✍️</span>
+        </div>
+
+        <form id="postForm">
+          <textarea id="message" maxlength="2000"
+            placeholder="اكتب منشورك هنا... شارك هدف رائع أو تشكيلتك الجديدة ⚽"
+            required></textarea>
+
+          <div class="image-preview" id="imagePreview" hidden>
+            <img id="previewImg" alt="معاينة الصورة">
+            <button type="button" id="removeImage" class="remove-image">حذف الصورة ✕</button>
+          </div>
+
+          <div class="composer-bottom">
+            <label class="image-picker" for="imageInput">
+              🖼️ إضافة صورة
+            </label>
+            <input type="file" id="imageInput" accept="image/*" hidden>
+            <button class="publish-button" type="submit">نشر المنشور ↗</button>
+          </div>
+          <small class="hint">تقدر تنشر نصًا فقط أو تضيف صورة من جهازك.</small>
+        </form>
+      </section>
+
+      <section class="feed" id="feed">
+        <div class="feed-heading">
+          <div>
+            <h2>آخر المنشورات</h2>
+            <p>وش راه يشارك مجتمع اللاعبين؟</p>
+          </div>
+          <span class="feed-label">COMMUNITY FEED</span>
+        </div>
+
+        <div id="posts"></div>
+      </section>
+
+     
+<section class="market-section" id="market">
+  <div class="feed-heading">
+    <div>
+      <span class="eyebrow">EFOOTBALL MARKET</span>
+      <h2>⚽ سوق المجتمع</h2>
+      <p>عروض الحسابات والتبديل بين اللاعبين</p>
+    </div>
+    <span class="heading-icon">♻️</span>
+  </div>
+
+  <div class="market-notice">
+    ⚠️ لا تشارك كلمة المرور أو رموز التحقق مع أي شخص.
+    تحقّق من شروط KONAMI قبل نقل الحسابات أو تداولها.
+  </div>
+
+  <div class="market-actions">
+    <button type="button" class="publish-button"
+      onclick="document.getElementById('listingForm').hidden = false">
+      ＋ إضافة عرض
+    </button>
+  </div>
+
+  <form id="listingForm" class="listing-form" hidden>
+    <label for="listingType">نوع العرض</label>
+    <select id="listingType" required>
+      <option value="sale">عرض للبيع</option>
+      <option value="exchange">عرض للتبديل</option>
+    </select>
+
+    <label for="listingTitle">عنوان العرض</label>
+    <input id="listingTitle" maxlength="80"
+      placeholder="مثال: تشكيلة eFootball" required>
+
+    <label for="listingDetails">تفاصيل التشكيلة</label>
+    <textarea id="listingDetails" maxlength="1000"
+      placeholder="اكتب تقييم الفريق واللاعبين المميزين"
+      required></textarea>
+
+    <label for="listingPrice">السعر (اختياري)</label>
+    <input id="listingPrice" type="number" min="0"
+      placeholder="السعر بالدينار الجزائري">
+
+    <button class="publish-button" type="submit">نشر العرض</button>
+    <button class="action-button" type="button"
+      onclick="document.getElementById('listingForm').hidden = true">
+      إلغاء
+    </button>
+    <p id="listingMessage" role="status"></p>
+  </form>
+
+  <div id="marketListings" class="market-grid">
+    <div class="empty-state">
+      <span class="empty-icon">⚽</span>
+      <h3>سوق الحسابات</h3>
+      <p>راح تظهر العروض هنا بعد ربط السوق بقاعدة البيانات.</p>
+    </div>
+  </div>
+</section>
+ <footer>⚽ EFOOTBALL COMMUNITY · مجتمع اللاعبين</footer>
+    </main>
+
+    <aside class="right-panel">
+      <div class="side-card">
+        <span class="side-card-icon">🏆</span>
+        <h3>مجتمع واحد</h3>
+        <p>تبادل الخبرات والأفكار مع محبي eFootball.</p>
+      </div>
+
+      <div class="side-card tips">
+        <h3>💡 نصيحة اليوم</h3>
+        <p>شارك تشكيلتك واشرح خطتك باش يستفاد منها اللاعبون الآخرون.</p>
+      </div>
+
+      <div class="side-card rules">
+        <h3>🤝 قواعد المجتمع</h3>
+        <p>احترم اللاعبين، تجنب السبّ، وشارك محتوى متعلق باللعبة.</p>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "efootball_community_posts_v2";
+
+    let posts = [];
+    let selectedImage = "";
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const parsed = stored ? JSON.parse(stored) : [];
+      posts = Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      posts = [];
+    }
+
+    const form = document.getElementById("postForm");
+    const messageInput = document.getElementById("message");
+    const imageInput = document.getElementById("imageInput");
+    const imagePreview = document.getElementById("imagePreview");
+    const previewImg = document.getElementById("previewImg");
+    const postsContainer = document.getElementById("posts");
+
+    function savePosts() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+        return true;
+      } catch (error) {
+        alert("مساحة التخزين ممتلئة. جرّب صورة أصغر أو احذف بعض المنشورات.");
+        return false;
+      }
+    }
+
+    function formatDate(date) {
+      return new Date(date).toLocaleString("ar-DZ");
+    }
+
+    function makeElement(tag, className, text) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      if (text !== undefined) element.textContent = text;
+      return element;
+    }
+
+    function renderPosts() {
+      postsContainer.replaceChildren();
+
+      if (posts.length === 0) {
+        const empty = makeElement("div", "empty-state");
+        empty.append(
+          makeElement("span", "empty-icon", "⚽"),
+          makeElement("h3", "", "ما كاين حتى منشور لحد الآن"),
+          makeElement("p", "", "كون أول واحد يشارك حاجة مع المجتمع!")
+        );
+        postsContainer.appendChild(empty);
+        return;
+      }
+
+      posts.forEach(function (item) {
+        const post = makeElement("article", "post-card");
+
+        const postHeader = makeElement("div", "post-header");
+        const avatar = makeElement("div", "avatar post-avatar", "E");
+        const authorInfo = makeElement("div", "author-info");
+        authorInfo.append(
+          makeElement("strong", "", "EFOOTBALL FAN"),
+          makeElement("small", "", formatDate(item.date))
+        );
+        postHeader.append(avatar, authorInfo);
+        post.appendChild(postHeader);
+
+        const content = makeElement("p", "post-text", item.text);
+        post.appendChild(content);
+
+        if (item.image) {
+          const image = makeElement("img", "post-image");
+          image.src = item.image;
+          image.alt = "صورة مرفقة بالمنشور";
+          image.loading = "lazy";
+          post.appendChild(image);
+        }
+
+        const stats = makeElement("div", "post-stats");
+        const likesCount = Array.isArray(item.likedBy) ? item.likedBy.length : 0;
+        const commentsCount = Array.isArray(item.comments) ? item.comments.length : 0;
+        stats.append(
+          makeElement("span", "", "❤️ " + likesCount + " إعجاب"),
+          makeElement("span", "", "💬 " + commentsCount + " تعليق")
+        );
+        post.appendChild(stats);
+
+        const actions = makeElement("div", "post-actions");
+        const likeButton = makeElement(
+          "button",
+          item.liked ? "action-button liked" : "action-button",
+          item.liked ? "❤️ أعجبني" : "♡ إعجاب"
+        );
+        likeButton.type = "button";
+        likeButton.addEventListener("click", function () {
+          item.liked = !item.liked;
+          if (!Array.isArray(item.likedBy)) item.likedBy = [];
+          if (item.liked) {
+            item.likedBy.push("local-user");
+          } else {
+            item.likedBy = item.likedBy.filter(id => id !== "local-user");
+          }
+          savePosts();
+          renderPosts();
+        });
+
+        const commentButton = makeElement("button", "action-button", "💬 التعليقات");
+        commentButton.type = "button";
+        commentButton.addEventListener("click", function () {
+          const input = post.querySelector(".comment-input");
+          if (input) input.focus();
+        });
+
+        actions.append(likeButton, commentButton);
+        post.appendChild(actions);
+
+        const commentsList = makeElement("div", "comments-list");
+        (Array.isArray(item.comments) ? item.comments : []).forEach(function (comment) {
+          const commentRow = makeElement("div", "comment-row");
+          commentRow.append(
+            makeElement("span", "comment-avatar", "E"),
+            makeElement("p", "comment-text", comment.text),
+            makeElement("small", "comment-date", comment.date || "")
+          );
+          commentsList.appendChild(commentRow);
+        });
+        post.appendChild(commentsList);
+
+        const commentForm = makeElement("form", "comment-form");
+        const commentInput = makeElement("input", "comment-input");
+        commentInput.type = "text";
+        commentInput.maxLength = 300;
+        commentInput.placeholder = "اكتب تعليقك...";
+        commentInput.required = true;
+
+        const sendComment = makeElement("button", "comment-send", "إرسال");
+        sendComment.type = "submit";
+        commentForm.append(commentInput, sendComment);
+commentForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const text = commentInput.value.trim();
+          if (!text) return;
+
+          if (!Array.isArray(item.comments)) item.comments = [];
+          item.comments.push({
+            text: text,
+            date: new Date().toLocaleString("ar-DZ")
+          });
+
+          if (savePosts()) renderPosts();
+        });
+
+        post.appendChild(commentForm);
+        postsContainer.appendChild(post);
+      });
+    }
+
+    imageInput.addEventListener("change", function () {
+      const file = imageInput.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        alert("اختار ملف صورة من فضلك.");
+        imageInput.value = "";
+        return;
+      }
+
+      if (file.size > 1024 * 1024) {
+        alert("الصورة كبيرة بزاف. اختار صورة حجمها 1 ميغابايت أو أقل.");
+        imageInput.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        selectedImage = reader.result;
+        previewImg.src = selectedImage;
+        imagePreview.hidden = false;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById("removeImage").addEventListener("click", function () {
+      selectedImage = "";
+      imageInput.value = "";
+      previewImg.removeAttribute("src");
+      imagePreview.hidden = true;
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const text = messageInput.value.trim();
+      if (!text && !selectedImage) {
+        alert("اكتب منشورًا أو أضف صورة أولاً.");
+        return;
+      }
+
+      const newPost = {
+        id: Date.now(),
+        text: text,
+        image: selectedImage,
+        date: new Date().toISOString(),
+        liked: false,
+        likedBy: [],
+        comments: []
+      };
+
+      posts.unshift(newPost);
+
+      if (!savePosts()) {
+        posts.shift();
+        return;
+      }
+
+      messageInput.value = "";
+      selectedImage = "";
+      imageInput.value = "";
+      previewImg.removeAttribute("src");
+      imagePreview.hidden = true;
+      renderPosts();
+
+      document.getElementById("feed").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+
+    renderPosts();
+  
+    // إعداد الاتصال بقاعدة البيانات
+    const SUPABASE_URL = "https://skidqfnomxrgdkvbwrgf.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_DOOPVVEASu1YZExSNhD3bw_8jkBIOOu";
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    console.log("تم إعداد اتصال Supabase");
+supabaseClient
+  .from("posts")
+  .select("id")
+  .limit(1)
+  .then(({ data, error }) => {
+    if (error) {
+      console.error("خطأ في قاعدة البيانات:", error.message);
+    } else {
+      console.log("الاتصال بقاعدة البيانات ناجح ✅", data);
+    }
+  });
+  
+    
+    // إنشاء حساب جديد
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
+      const msg = document.getElementById("authMessage");
+
+      if (!email || !password) {
+        msg.textContent = "اكتب البريد الإلكتروني وكلمة المرور";
+        return;
+      }
+
+      msg.textContent = "جارٍ إنشاء الحساب...";
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password
+      });
+
+      if (error) {
+        msg.textContent = "خطأ: " + error.message;
+        return;
+      }
+
+      if (data.session) {
+        msg.textContent = "تم إنشاء الحساب بنجاح ✅";
+        await updateAuthUI();
+      } else {
+        msg.textContent =
+          "تم إنشاء الحساب. إذا طُلب تأكيد البريد، أكّده ثم سجّل الدخول لاختيار اسمك.";
+      }
+    });
+
+    // تسجيل الدخول
+    document.getElementById("authForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
+      const msg = document.getElementById("authMessage");
+
+      msg.textContent = "جارٍ تسجيل الدخول...";
+
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        console.error("خطأ تسجيل الدخول:", error);
+        msg.textContent = "تعذّر تسجيل الدخول: " + error.message;
+        return;
+      }
+
+      msg.textContent = "تم تسجيل الدخول بنجاح! ✅";
+      await updateAuthUI();
+    });
+
+    // حفظ اسم المستخدم في Supabase
+    document.getElementById("usernameForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const input = document.getElementById("usernameInput");
+      const msg = document.getElementById("usernameMessage");
+      const username = input.value.trim();
+
+      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+        msg.textContent =
+          "استعمل 3 إلى 20 حرفًا أو رقمًا أو شرطة سفلية _";
+        return;
+      }
+
+      msg.textContent = "جارٍ حفظ الاسم...";
+
+      const { data: userData, error: userError } =
+        await supabaseClient.auth.getUser();
+
+      if (userError || !userData.user) {
+        msg.textContent = "سجّل الدخول من جديد وحاول مرة أخرى.";
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("profiles")
+        .upsert(
+          {
+            id: userData.user.id,
+            username: username
+          },
+          { onConflict: "id" }
+        );
+
+      if (error) {
+        console.error("خطأ حفظ الاسم:", error);
+
+        msg.textContent = error.code === "23505"
+          ? "هذا الاسم مستعمل، اختار اسمًا آخر."
+          : "ما قدرناش نحفظو الاسم: " + error.message;
+
+        return;
+      }
+
+      msg.textContent = "تم حفظ اسمك بنجاح! ✅";
+      await updateAuthUI();
+    });
+
+    // تحديث حالة الحساب والاسم
+    async function updateAuthUI() {
+      const { data } = await supabaseClient.auth.getSession();
+      const session = data.session;
+      const authSection = document.getElementById("authSection");
+      const usernameSection = document.getElementById("usernameSection");
+      const layout = document.querySelector(".layout");
+
+      
+      if (!session) {
+      window.location.replace("login_new.html");
+        return;
+      }
+
+
+      authSection.hidden = true;
+      document.getElementById("loginBtn").hidden = true;
+      document.getElementById("signupBtn").hidden = true;
+      document.getElementById("logoutBtn").hidden = false;
+
+      const { data: profile, error } = await supabaseClient
+        .from("profiles")
+        .select("username, avatar_url")
+        .eq("id", session.user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error("خطأ قراءة الملف الشخصي:", error);
+        document.getElementById("authMessage").textContent =
+          "تعذّر تحميل الملف الشخصي: " + error.message;
+        return;
+      }
+
+      if (!profile || !profile.username) {
+        usernameSection.hidden = false;
+        layout.hidden = true;
+        return;
+      }
+
+      usernameSection.hidden = true;
+      layout.hidden = false;
+
+      const profileName = document.querySelector(".profile-mini strong");
+      if (profileName) {
+        profileName.textContent = profile.username;
+      }
+
+      const profileSubtitle = document.querySelector(".profile-mini small");
+      if (profileSubtitle) {
+        profileSubtitle.textContent = "عضو في المجتمع";
+      }
+    }
+
+    // تسجيل الخروج
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      const { error } = await supabaseClient.auth.signOut();
+
+      if (error) {
+        document.getElementById("authMessage").textContent =
+          "خطأ في تسجيل الخروج: " + error.message;
+        return;
+      }
+
+      document.getElementById("authMessage").textContent = "تم تسجيل الخروج";
+      await updateAuthUI();
+    });
+
+    // متابعة تغيّر حالة الحساب
+    supabaseClient.auth.onAuthStateChange(() => {
+      updateAuthUI();
+    });
+
+    updateAuthUI();
+
+</script>
+</body>
+</html>

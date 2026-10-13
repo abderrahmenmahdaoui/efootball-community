@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EFOOTBALL COMMUNITY | Login</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --green: #b7ff35;
+  --dark: #070b0b;
+  --panel: rgba(10, 17, 17, .92);
+}
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: white;
+  background: #050909;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(2,8,7,.97), rgba(2,8,7,.72), rgba(2,8,7,.45)),
+    url("https://www.konami.com/games_cms/promo/na/uploads/efootball_v5_customstadium_messi-1024x576.jpg")
+    center/cover no-repeat;
+  transform: scale(1.03);
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse at 75% 30%, transparent, #020605 85%);
+  pointer-events: none;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 22px 6%;
+}
+.logo {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+.logo span { color: var(--green); }
+.lang {
+  background: #151d19;
+  border: 1px solid #38483a;
+  color: white;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+main {
+  max-width: 1150px;
+  margin: 30px auto 60px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 50px;
+  align-items: center;
+}
+.tag {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+h1 {
+  font-size: clamp(38px, 5vw, 66px);
+  line-height: .98;
+  margin: 18px 0;
+  text-transform: uppercase;
+}
+h1 span { color: var(--green); }
+.intro {
+  max-width: 470px;
+  color: #c4ceca;
+  line-height: 1.7;
+}
+.players {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  margin-top: 32px;
+}
+.player {
+  flex: 1;
+  min-width: 0;
+  max-width: 170px;
+  height: 230px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 13px;
+  border: 1px solid #8ca64d;
+  background: linear-gradient(160deg, #2a4435, #101714 60%, #536b20);
+  box-shadow: 0 12px 35px #0008;
+}
+.player:nth-child(2) {
+  height: 260px;
+  background: linear-gradient(160deg, #423b19, #131712 65%, #6d7421);
+}
+.player:nth-child(3) {
+  background: linear-gradient(160deg, #253b56, #111519 65%, #344d69);
+}
+.player img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: .82;
+}
+.player::after {
+  content: "";
+  position: absolute;
+  inset: 30% 0 0;
+  background: linear-gradient(transparent, #050908 96%);
+}
+.player-info {
+  position: absolute;
+  z-index: 1;
+  bottom: 12px;
+  left: 10px;
+  right: 10px;
+}
+.rating { color: var(--green); font-size: 23px; font-weight: 900; }
+.player-name { font-size: 12px; font-weight: 900; letter-spacing: 1px; }
+.player-type { font-size: 9px; color: #c7d0c7; margin-top: 5px; }
+.form-card {
+  background: var(--panel);
+  border: 1px solid #344438;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 25px 80px #0009;
+  backdrop-filter: blur(16px);
+}
+.form-card h2 { margin: 0 0 8px; font-size: 28px; }
+.muted { color: #9daaa2; font-size: 14px; line-height: 1.5; }
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 25px 0;
+  padding: 5px;
+  border-radius: 10px;
+  background: #070b09;
+}
+.tabs button {
+  border: 0;
+  color: #aab4ac;
+  background: transparent;
+  padding: 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.tabs button.active { background: #26351e; color: var(--green); }
+label { display: block; font-size: 13px; margin: 17px 0 8px; color: #dbe3dc; }
+input {
+  width: 100%;
+  padding: 14px;
+  background: #090e0c;
+  border: 1px solid #303b33;
+  border-radius: 8px;
+  color: white;
+  outline: none;
+}
+input:focus { border-color: var(--green); }
+.submit {
+  width: 100%;
+  margin-top: 24px;
+  padding: 15px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--green);
+  color: #101609;
+  font-weight: 900;
+  cursor: pointer;
+  transition: .2s;
+}
+.submit:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.submit:disabled { opacity: .6; cursor: wait; transform: none; }
+.message {
+  display: none;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #18251a;
+  color: #d6ffbb;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.message.error { background: #301818; color: #ffc3c3; }
+.footer { text-align: center; margin-top: 20px; color: #7f8b82; font-size: 11px; }
+[dir="rtl"] { text-align: right; }
+[dir="rtl"] .player-info { left: 10px; right: 10px; }
+@media (max-width: 800px) {
+  main { grid-template-columns: 1fr; gap: 30px; margin-top: 5px; }
+  .hero { text-align: center; }
+  .intro { margin: auto; }
+  .players { justify-content: center; }
+  .player { max-width: 145px; height: 190px; }
+  .player:nth-child(2) { height: 220px; }
+  .form-card { max-width: 500px; width: 100%; margin: auto; }
+}
+@media (max-width: 400px) {
+  .form-card { padding: 22px; }
+  .players { gap: 7px; }
+  .player { height: 165px; }
+  .player:nth-child(2) { height: 190px; }
+}
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  padding-left: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  font-size: 19px;
+  line-height: 1;
+}</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">EFOOTBALL <span>COMMUNITY</span></div>
+  <button class="lang" id="langBtn" type="button">العربية</button>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="tag" data-en="YOUR GAME. YOUR COMMUNITY."
+         data-ar="لعبتك. مجتمعك.">YOUR GAME. YOUR COMMUNITY.</div>
+
+    <h1 data-en="LIVE THE <span>GAME</span>"
+        data-ar="عِش <span>أجواء اللعبة</span>">LIVE THE <span>GAME</span></h1>
+
+    <p class="intro"
+       data-en="Join the eFootball community. Share your squad, discuss players, and connect with other fans."
+       data-ar="انضم إلى مجتمع eFootball وشارك تشكيلتك وناقش اللاعبين وتواصل مع عشاق اللعبة.">
+      Join the eFootball community. Share your squad, discuss players, and connect with other fans.
+    </p>
+
+    <div class="players">
+      <div class="player">
+        <img src="https://www.konami.com/games_cms/promo/na/uploads/efootball_leomessiedition2026_16_9_en-1024x576.jpg"
+             alt="eFootball Lionel Messi"
+             onerror="this.style.display='none'">
+      </div>
+
+      <div class="player">
+        <img src="https://www.konami.com/games_cms/promo/na/uploads/efootball_v5_customstadium_yamal-1024x576.jpg"
+             alt="eFootball Lamine Yamal"
+             onerror="this.style.display='none'">
+      </div>
+
+      <div class="player">
+        <img src="https://www.konami.com/games_cms/promo/na/uploads/efootball_v5_customstadium_messi-1024x576.jpg"
+             alt="eFootball stadium"
+             onerror="this.style.display='none'">
+        <div class="player-info">
+          <div class="rating">EPIC</div>
+          <div class="player-name">DREAM TEAM</div>
+          <div class="player-type">BUILD YOUR SQUAD</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="form-card">
+    <h2 id="formTitle">Welcome back</h2>
+    <p class="muted" id="formSubtitle">Enter your details to enter the community.</p>
+
+    <div class="tabs">
+      <button type="button" class="active" id="loginTab">Log in</button>
+      <button type="button" id="signupTab">Create account</button>
+    </div>
+
+    <form id="authForm">
+            <label for="username" id="usernameLabel">Username</label>
+      <input id="username" type="text" autocomplete="username"
+             minlength="3" maxlength="24"
+             placeholder="Enter your username" required>
+
+      <label for="email" id="emailLabel">Email address</label>
+      <input id="email" type="email" autocomplete="email"
+             placeholder="you@example.com" required>
+
+      <label for="password" id="passwordLabel">Password</label>
+<div class="password-wrapper">
+  <input id="password" type="password" autocomplete="current-password"
+         minlength="6" placeholder="Enter your password" required>
+  <button type="button" id="togglePassword"
+          class="password-toggle" aria-label="Show password">👁️</button>
+</div>
+      <button class="submit" id="submitBtn" type="submit">ENTER COMMUNITY ↗</button>
+    </form>
+
+    <div class="message" id="message" role="status" aria-live="polite"></div>
+    <div class="footer">EFOOTBALL COMMUNITY • MADE FOR FANS</div>
+  </section>
+</main>
+
+<script>
+const SUPABASE_URL = "https://skidqfnomxrgdkvbwrgf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DOOPVVEASu1YZExSNhD3bw_8jkBIOOu";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const $ = id => document.getElementById(id);
+let mode = "login";
+let language = "en";
+
+function showMessage(text, error = false) {
+  const box = $("message");
+  box.textContent = text;
+  box.className = "message" + (error ? " error" : "");
+  box.style.display = "block";
+}
+
+
+function setMode(newMode) {
+  mode = newMode;
+
+  $("loginTab").classList.toggle("active", mode === "login");
+  $("signupTab").classList.toggle("active", mode === "signup");
+
+  $("formTitle").textContent = mode === "login"
+    ? (language === "en" ? "Welcome back" : "مرحبًا بعودتك")
+    : (language === "en" ? "Join the community" : "انضم إلى المجتمع");
+
+  $("formSubtitle").textContent = mode === "login"
+    ? (language === "en"
+        ? "Enter your details to enter the community."
+        : "أدخل معلوماتك للدخول إلى المجتمع.")
+    : (language === "en"
+        ? "Create your account and join the action."
+        : "أنشئ حسابك وانضم إلى المجتمع.");
+
+  $("submitBtn").textContent = mode === "login"
+    ? (language === "en" ? "ENTER COMMUNITY ↗" : "الدخول إلى المجتمع ↗")
+    : (language === "en" ? "CREATE ACCOUNT ↗" : "إنشاء حساب ↗");
+
+  $("password").autocomplete =
+    mode === "login" ? "current-password" : "new-password";
+
+  // إظهار اسم المستخدم عند إنشاء الحساب فقط
+  $("usernameLabel").style.display =
+    mode === "signup" ? "block" : "none";
+
+  $("username").style.display =
+    mode === "signup" ? "block" : "none";
+
+  $("username").required = mode === "signup";
+
+  $("usernameLabel").textContent =
+    language === "en" ? "Username" : "اسم المستخدم";
+
+  $("username").placeholder =
+    language === "en" ? "Enter your username" : "أدخل اسم المستخدم";
+
+  $("username").autocomplete = "username";
+
+  $("message").style.display = "none";
+}
+
+function setLanguage(lang) {
+  language = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  $("langBtn").textContent = lang === "en" ? "العربية" : "English";
+
+  document.querySelectorAll("[data-en]").forEach(el => {
+    el.innerHTML = el.dataset[lang];
+  });
+
+  $("emailLabel").textContent = lang === "en" ? "Email address" : "البريد الإلكتروني";$("usernameLabel").textContent =
+  lang === "en" ? "Username" : "اسم المستخدم";
+
+$("username").placeholder =
+  lang === "en" ? "Enter your username" : "أدخل اسم المستخدم";
+  $("passwordLabel").textContent = lang === "en" ? "Password" : "كلمة المرور";
+  $("email").placeholder = lang === "en" ? "you@example.com" : "you@example.com";
+  $("password").placeholder = lang === "en" ? "Enter your password" : "أدخل كلمة المرور";
+  setMode(mode);
+}
+
+$("langBtn").addEventListener("click", () => {
+  setLanguage(language === "en" ? "ar" : "en");
+});
+$("loginTab").addEventListener("click", () => setMode("login"));
+$("signupTab").addEventListener("click", () => setMode("signup"));
+setMode("login");
+async function goToCommunityIfReady(user) {
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("username")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (error) {
+    showMessage(
+      language === "en"
+        ? "Signed in, but we couldn't check your profile. Open community.html to continue."
+        : "تم تسجيل الدخول، لكن تعذر التحقق من ملفك الشخصي. افتح community.html للمتابعة.",
+      true
+    );
+    return false;
+  }
+
+  // Existing community flow handles users who have not chosen a username yet.
+  window.location.href = "community.html";
+  return true;
+}
+
+
+
+$("authForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const email = $("email").value.trim();
+  const password = $("password").value;
+  const username = $("username").value.trim();
+  const button = $("submitBtn");
+
+  button.disabled = true;
+  button.textContent = language === "en" ? "PLEASE WAIT..." : "انتظر...";
+  $("message").style.display = "none";
+
+  try {
+    if (mode === "login") {
+      // تسجيل الدخول بالبريد الإلكتروني وكلمة السر
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) throw error;
+
+      window.location.href = "community.html";
+
+    } else {
+      // التحقق من اسم المستخدم
+      if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
+        throw new Error(
+          language === "en"
+            ? "Username must be 3–24 characters using letters, numbers, or underscores."
+            : "اسم المستخدم لازم يكون بين 3 و24 حرفًا، باستعمال الحروف والأرقام و _ فقط."
+        );
+      }
+
+      // إنشاء الحساب
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { username },
+          emailRedirectTo: window.location.origin + window.location.pathname
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        // حفظ اسم المستخدم في جدول profiles
+        const { error: profileError } = await supabaseClient
+          .from("profiles")
+          .upsert(
+            {
+              id: data.user.id,
+              username: username
+            },
+            { onConflict: "id" }
+          );
+
+        if (profileError) {
+          console.error("Profile error:", profileError);
+          showMessage(
+            language === "en"
+              ? "Account created, but saving your username failed. Check your Supabase policies."
+              : "تم إنشاء الحساب، لكن فشل حفظ اسم المستخدم. تحقق من صلاحيات Supabase.",
+            true
+          );
+        } else if (data.session) {
+          window.location.href = "community.html";
+        } else {
+          showMessage(
+            language === "en"
+              ? "Account created! Check your email to confirm your account."
+              : "تم إنشاء الحساب! تحقق من بريدك الإلكتروني لتأكيد الحساب."
+          );
+        }
+      }
+    }
+  } catch (error) {
+    showMessage(
+      error.message ||
+        (language === "en"
+          ? "Something went wrong. Please try again."
+          : "حدث خطأ. حاول مرة أخرى."),
+      true
+    );
+  } finally {
+    button.disabled = false;
+    setMode(mode);
+  }
+});
+
+// إظهار وإخفاء كلمة السر
+const passwordInput = $("password");
+const togglePassword = $("togglePassword");
+
+togglePassword.addEventListener("click", () => {
+  const showing = passwordInput.type === "password";
+  passwordInput.type = showing ? "text" : "password";
+  togglePassword.textContent = showing ? "🙈" : "👁️";
+});
+
+// التحقق من وجود جلسة سابقة
+(async function checkSession() {
+  const { data } = await supabaseClient.auth.getSession();
+
+  if (data.session) {
+    window.location.replace("community.html");
+  }
+})();
+
+</script>
+</body>
+</html>

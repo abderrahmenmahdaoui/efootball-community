@@ -1,0 +1,608 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>البطولات | EFOOTBALL COMMUNITY</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #080b09;
+      color: #f2fff5;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: #101612;
+      border-bottom: 1px solid #39ff72;
+      padding: 22px 12px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      color: #39ff72;
+    }
+
+    header p { color: #a9b8ad; }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      padding: 15px;
+      background: #0d120e;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      border: 1px solid #2b3c30;
+      padding: 9px 12px;
+      border-radius: 8px;
+    }
+
+    nav a:hover {
+      color: #39ff72;
+      border-color: #39ff72;
+    }
+
+    main {
+      width: min(900px, 94%);
+      margin: 25px auto;
+    }
+
+    .card {
+      background: #101612;
+      border: 1px solid #263b2b;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    h2 { color: #39ff72; margin-top: 0; }
+
+    label {
+      display: block;
+      margin: 13px 0 7px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    input, select {
+      background: #080b09;
+      border: 1px solid #354b39;
+      color: white;
+    }
+
+    button {
+      background: #39ff72;
+      color: #071009;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    button:hover { background: #20df59; }
+
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .secondary {
+      background: #202b22;
+      color: white;
+      border: 1px solid #405844;
+    }
+
+    .tournament {
+      background: #090e0b;
+      border: 1px solid #2a4030;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+
+    .tournament h3 { color: #39ff72; }
+
+    .code {
+      display: inline-block;
+      direction: ltr;
+      color: #39ff72;
+      background: #142019;
+      border: 1px dashed #39ff72;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin: 5px 0;
+    }
+
+    .info {
+      color: #c0cec3;
+      line-height: 1.9;
+      font-size: 14px;
+    }
+
+    .members {
+      padding: 10px;
+      border-radius: 8px;
+      background: #111a13;
+      margin-top: 10px;
+      line-height: 2;
+      overflow-wrap: anywhere;
+    }
+
+    .msg {
+      padding: 12px;
+      border-radius: 8px;
+      background: #18221a;
+      margin-bottom: 12px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 18px;
+      color: #a0afa4;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .row > div { flex: 1; min-width: 180px; }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #819084;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🏆 EFOOTBALL COMMUNITY</h1>
+    <p>أنشئ بطولتك وشارك كودها مع أصدقائك ⚽</p>
+  </header>
+
+  <nav>
+    <a href="community.html">🏠 الرئيسية</a>
+    <a href="friends.html">👥 الأصدقاء</a>
+    <a href="messages.html">💬 الرسائل</a>
+    <a href="tournaments.html">🏆 البطولات</a>
+    <a href="market.html">🛒 السوق</a>
+    <a href="profile.html">👤 حسابي</a>
+  </nav>
+
+  <main>
+    <div id="message" class="msg" hidden></div>
+
+    <section class="card">
+      <h2>➕ إنشاء بطولة</h2>
+
+      <form id="createForm">
+        <label for="name">اسم البطولة</label>
+        <input id="name" maxlength="60"
+          placeholder="مثال: بطولة أبطال الجزائر"
+          required>
+
+        <div class="row">
+          <div>
+            <label for="capacity">عدد أعضاء البطولة</label>
+            <select id="capacity" required>
+              <option value="4">4 أعضاء فقط</option>
+              <option value="8">8 أعضاء فقط</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="mode">نظام البطولة</label>
+            <select id="mode">
+              <option value="knockout">إقصاء مباشر</option>
+              <option value="league">دوري بالنقاط</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit">🏆 إنشاء البطولة وتوليد الكود</button>
+      </form>
+
+      <p class="info">
+        لازم تكون مسجّل الدخول. منشئ البطولة يُحسب ضمن الأعضاء الأربعة أو الثمانية.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>🔑 الانضمام بكود البطولة</h2>
+
+      <form id="joinForm">
+        <label for="joinCode">أدخل كود البطولة</label>
+        <input id="joinCode"
+          placeholder="مثال: EF-A7K2P9"
+          maxlength="20"
+          dir="ltr"
+          required>
+
+        <button type="submit">الانضمام إلى البطولة</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>🏆 البطولات المتاحة</h2>
+      <button id="refreshBtn" class="secondary">🔄 تحديث القائمة</button>
+      <div id="tournamentList" class="empty">
+        جاري تحميل البطولات...
+      </div>
+    </section>
+  </main>
+
+  <footer>EFOOTBALL COMMUNITY © 2026</footer>
+
+  <script>
+    const SUPABASE_URL =
+      "https://skidqfnomxrgdkvbwrgf.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_DOOPVVEASu1YZExSNhD3bw_8jkBIOOu";
+
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    const list = document.getElementById("tournamentList");
+    const messageBox = document.getElementById("message");
+
+    function showMessage(text) {
+      messageBox.hidden = false;
+      messageBox.textContent = text;
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, c => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[c]);
+    }
+
+    function makeCode() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let result = "EF-";
+
+      for (let i = 0; i < 6; i++) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+      }
+
+      return result;
+    }
+
+    async function getUser() {
+      const { data, error } = await db.auth.getUser();
+
+      if (error || !data.user) {
+        showMessage("لازم تسجّل الدخول أولًا باش تنشئ بطولة أو تشارك فيها.");
+        return null;
+      }
+
+      return data.user;
+    }
+
+    async function loadTournaments() {
+      list.className = "empty";
+      list.textContent = "جاري تحميل البطولات...";
+
+      const { data: tournaments, error } = await db
+        .from("tournaments")
+        .select("id,name,code,mode,capacity,created_by,status,created_at")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        list.textContent =
+          "قاعدة بيانات البطولات ما زالت تحتاج الإعداد في Supabase.";
+        console.error(error);
+        return;
+      }
+
+      if (!tournaments || tournaments.length === 0) {
+        list.textContent = "ما كاين حتى بطولة حاليًا. أنشئ أول بطولة!";
+        return;
+      }
+
+      list.className = "";
+
+      const { data: { user } } = await db.auth.getUser();
+
+      const { data: profiles } = await db
+        .from("profiles")
+        .select("id,username");
+
+      const names = {};
+      (profiles || []).forEach(p => {
+        names[p.id] = p.username || "لاعب";
+      });
+
+      const { data: participants, error: participantError } = await db
+        .from("tournament_participants")
+        .select("tournament_id,user_id");
+
+      if (participantError) {
+        list.textContent =
+          "تعذر تحميل المشاركين. تحقق من جدول tournament_participants.";
+        console.error(participantError);
+        return;
+      }
+
+      list.innerHTML = "";
+
+      tournaments.forEach(t => {
+        const members = (participants || []).filter(
+          p => p.tournament_id === t.id
+        );
+
+        const alreadyJoined = !!user && members.some(
+          p => p.user_id === user.id
+        );
+
+        const full = members.length >= t.capacity;
+        const isOpen = t.status === "open";
+        const owner = !!user && t.created_by === user.id;
+
+        const article = document.createElement("article");
+        article.className = "tournament";
+
+        article.innerHTML = `
+          <h3>🏆 ${escapeHTML(t.name)}</h3>
+
+          <div class="info">
+            النظام: ${t.mode === "league" ? "دوري بالنقاط" : "إقصاء مباشر"}<br>
+            الأعضاء: ${members.length}/${t.capacity}<br>
+            الحالة: ${full ? "مكتملة" : isOpen ? "مفتوحة" : "مغلقة"}
+          </div>
+
+          <p>كود البطولة:</p>
+          <div class="code">${escapeHTML(t.code)}</div>
+          <button type="button" class="secondary copy-btn">📋 نسخ الكود</button>
+
+          <div class="members">
+            <strong>👥 أعضاء البطولة</strong><br>
+            ${
+              members.length
+                ? members.map(p =>
+                    "• " + escapeHTML(names[p.user_id] || "لاعب")
+                  ).join("<br>")
+                : "لا يوجد أعضاء"
+            }
+          </div>
+
+          <button type="button" class="join-this"
+            ${alreadyJoined || full || !isOpen ? "disabled" : ""}>
+            ${
+              alreadyJoined ? "✅ راك مشارك"
+              : full ? "⛔ البطولة مكتملة"
+              : !isOpen ? "البطولة مغلقة"
+              : "⚽ انضمام إلى البطولة"
+            }
+          </button>
+
+          ${owner && isOpen ? `
+            <button type="button" class="secondary close-btn">
+              🔒 إغلاق البطولة
+            </button>
+          ` : ""}
+        `;
+
+        article.querySelector(".copy-btn").addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(t.code);
+            showMessage("تم نسخ كود البطولة: " + t.code);
+          } catch {
+            showMessage("انسخ الكود يدويًا: " + t.code);
+          }
+        });
+
+        article.querySelector(".join-this").addEventListener("click", async () => {
+          await joinTournament(t.code);
+        });
+
+        const closeBtn = article.querySelector(".close-btn");
+
+        if (closeBtn) {
+          closeBtn.addEventListener("click", async () => {
+            const confirmed = confirm("هل تريد إغلاق هذه البطولة؟");
+            if (!confirmed) return;
+
+            const { error } = await db
+              .from("tournaments")
+              .update({ status: "closed" })
+              .eq("id", t.id)
+              .eq("created_by", user.id);
+
+            if (error) {
+              showMessage("تعذر إغلاق البطولة. تحقق من صلاحيات قاعدة البيانات.");
+              console.error(error);
+              return;
+            }
+
+            showMessage("تم إغلاق البطولة.");
+            await loadTournaments();
+          });
+        }
+
+        list.appendChild(article);
+      });
+    }
+
+    async function joinTournament(code) {
+      const user = await getUser();
+      if (!user) {
+        window.location.href = "login_new.html";
+        return;
+      }
+
+      const cleanCode = code.trim().toUpperCase();
+
+      const { data: tournament, error } = await db
+        .from("tournaments")
+        .select("id,name,capacity,status")
+        .eq("code", cleanCode)
+        .maybeSingle();
+
+      if (error || !tournament) {
+        showMessage("كود البطولة غير صحيح.");
+        return;
+      }
+
+      if (tournament.status !== "open") {
+        showMessage("هذه البطولة مغلقة.");
+        return;
+      }
+
+      const { data: existing } = await db
+        .from("tournament_participants")
+        .select("user_id")
+        .eq("tournament_id", tournament.id)
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (existing) {
+        showMessage("راك مسجل من قبل في هذه البطولة.");
+        return;
+      }
+
+      const { count, error: countError } = await db
+        .from("tournament_participants")
+        .select("*", { count: "exact", head: true })
+        .eq("tournament_id", tournament.id);
+
+      if (countError) {
+        showMessage("تعذر التحقق من عدد الأعضاء.");
+        return;
+      }
+
+      if ((count || 0) >= tournament.capacity) {
+        showMessage("البطولة عامرة، ما تقدرش تنضم.");
+        return;
+      }
+
+      const { error: insertError } = await db
+        .from("tournament_participants")
+        .insert({
+          tournament_id: tournament.id,
+          user_id: user.id
+        });
+
+      if (insertError) {
+        console.error(insertError);
+        showMessage("فشل الانضمام. ربما راك مسجل من قبل.");
+        return;
+      }
+
+      showMessage("مبروك! انضمّيت إلى بطولة " + tournament.name + " ⚽");
+      await loadTournaments();
+    }
+
+    document.getElementById("createForm").addEventListener("submit", async e => {
+      e.preventDefault();
+
+      const user = await getUser();
+
+      if (!user) {
+        window.location.href = "login_new.html";
+        return;
+      }
+
+      const name = document.getElementById("name").value.trim();
+      const capacity = Number(document.getElementById("capacity").value);
+      const mode = document.getElementById("mode").value;
+
+      if (!name || ![4, 8].includes(capacity)) {
+        showMessage("اكتب اسم البطولة واختر 4 أو 8 أعضاء.");
+        return;
+      }
+
+      const submitButton = e.submitter;
+      submitButton.disabled = true;
+
+      let created = false;
+
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const code = makeCode();
+
+        const { error } = await db.from("tournaments").insert({
+          name,
+          code,
+          capacity,
+          mode,
+          created_by: user.id,
+          status: "open"
+        });
+
+        if (!error) {
+          created = true;
+          break;
+        }
+
+        console.error(error);
+
+        // Retry only if the generated code collided with an existing code.
+        if (error.code !== "23505") {
+          showMessage("تعذر إنشاء البطولة. تأكد من إعداد جدول tournaments وصلاحياته.");
+          break;
+        }
+      }
+
+      if (created) {
+        showMessage("تم إنشاء البطولة! حدّدها في القائمة وانسخ كودها لمشاركته.");
+        e.target.reset();
+        await loadTournaments();
+      } else if (!messageBox.textContent) {
+        showMessage("ما قدرناش نولّد كود فريد. حاول مجددًا.");
+      }
+
+      submitButton.disabled = false;
+    });
+
+    document.getElementById("joinForm").addEventListener("submit", async e => {
+      e.preventDefault();
+
+      const code = document.getElementById("joinCode").value
+        .trim().toUpperCase();
+
+      if (!code) {
+        showMessage("اكتب كود البطولة.");
+        return;
+      }
+
+      await joinTournament(code);
+    });
+
+    document.getElementById("refreshBtn").addEventListener(
+      "click", loadTournaments
+    );
+
+    loadTournaments();
+  </script>
+</body>
+</html>
+```
